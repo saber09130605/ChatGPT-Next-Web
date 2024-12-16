@@ -273,6 +273,13 @@ export function Home() {
     },
     [trustedDomains],
   );
+  useEffect(() => {
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [handleMessage]);
   if (!useHasHydrated() || isLoading) {
     return <Loading />;
   }
