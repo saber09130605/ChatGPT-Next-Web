@@ -2,7 +2,7 @@
 
 require("../polyfill");
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./home.module.scss";
 
 import BotIcon from "../icons/bot.svg";
@@ -27,7 +27,8 @@ import { useAppConfig } from "../store/config";
 import { AuthPage } from "./auth";
 import { getClientConfig } from "../config/client";
 import { type ClientApi, getClientApi } from "../client/api";
-import { useAccessStore } from "../store";
+import { userAccessMemory, useAccessStore } from "../store";
+import { getServerSideConfig } from "../config/server";
 import clsx from "clsx";
 
 export function Loading(props: { noLogo?: boolean }) {
@@ -224,18 +225,55 @@ export function useLoadData() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
-
+const serverConfig = getServerSideConfig();
 export function Home() {
+  const trustedDomains = serverConfig.trustedDomains;
   useSwitchTheme();
   useLoadData();
   useHtmlLang();
 
-  useEffect(() => {
-    console.log("[Config] got config from build time", getClientConfig());
-    useAccessStore.getState().fetch();
-  }, []);
+  // useEffect(() => {
+  //   console.log("[Config] got config from build time", getClientConfig());
+  //   useAccessStore.getState().fetch();
+  // }, []);
+  // 新增状态，控制Loading组件显示
+  const [isLoading, setIsLoading] = useState(true);
+  const handleMessage = useCallback(
+    (event: MessageEvent) => {
+      if (!event.data) {
+        return;
+      }
 
-  if (!useHasHydrated()) {
+      // 检查消息来源，确保安全性
+      const trusted =
+        trustedDomains.length === 0 || trustedDomains.includes(event.origin);
+      if (!trusted) {
+        return;
+      }
+
+      try {
+        const data = JSON.parse(event.data);
+        // 当消息type为SET_USERNAME时，记录用户名
+        const type = data.type;
+        console.log("Received message from", event);
+        if (!type || type !== "SET_USERNAME") {
+          return;
+        }
+        console.log("From trusted domain", data);
+        userAccessMemory.getState().update((state) => {
+          state.username = data.value;
+        });
+        localStorage.setItem("tianzhi_token", data.token);
+        localStorage.setItem("parent_host", data.host);
+        useAccessStore.getState().syFetch();
+        setIsLoading(false);
+      } catch (e) {
+        console.error("Parsing message failed", e);
+      }
+    },
+    [trustedDomains],
+  );
+  if (!useHasHydrated() || isLoading) {
     return <Loading />;
   }
 

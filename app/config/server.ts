@@ -4,6 +4,7 @@ import { DEFAULT_MODELS, DEFAULT_GA_ID } from "../constant";
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      NEXT_PUBLIC_TRUSTED_DOMAINS?: string;
       PROXY_URL?: string; // docker only
 
       OPENAI_API_KEY?: string;
@@ -129,7 +130,9 @@ export const getServerSideConfig = () => {
     if (customModels) customModels += ",";
     customModels += DEFAULT_MODELS.filter(
       (m) =>
-        (m.name.startsWith("gpt-4") || m.name.startsWith("chatgpt-4o") || m.name.startsWith("o1")) &&
+        (m.name.startsWith("gpt-4") ||
+          m.name.startsWith("chatgpt-4o") ||
+          m.name.startsWith("o1")) &&
         !m.name.startsWith("gpt-4o-mini"),
     )
       .map((m) => "-" + m.name)
@@ -170,6 +173,7 @@ export const getServerSideConfig = () => {
   ).split(",");
 
   return {
+    trustedDomains: process.env.NEXT_PUBLIC_TRUSTED_DOMAINS?.split(",") ?? [],
     baseUrl: process.env.BASE_URL,
     apiKey: getApiKey(process.env.OPENAI_API_KEY),
     openaiOrgId: process.env.OPENAI_ORG_ID,

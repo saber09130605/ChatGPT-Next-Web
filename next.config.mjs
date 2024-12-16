@@ -70,6 +70,10 @@ if (mode !== "export") {
       //   destination: "https://api.openai.com/v1/:path*",
       // },
       {
+        source: '/api/getcode',
+        destination: process.env.NEXT_PUBLIC_TOKEN_SERVER, // 代理目标
+      },
+      {
         // https://{resource_name}.openai.azure.com/openai/deployments/{deploy_name}/chat/completions
         source: "/api/proxy/azure/:resource_name/deployments/:deploy_name/:path*",
         destination: "https://:resource_name.openai.azure.com/openai/deployments/:deploy_name/:path*",

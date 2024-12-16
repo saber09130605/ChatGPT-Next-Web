@@ -18,12 +18,16 @@ import {
 } from "../constant";
 import { getHeaders } from "../client/api";
 import { getClientConfig } from "../config/client";
-import { createPersistStore } from "../utils/store";
+import { createPersistStore, createMemoryStore } from "../utils/store";
 import { ensure } from "../utils/clone";
 import { DEFAULT_CONFIG } from "./config";
 import { getModelProvider } from "../utils/model";
 
 let fetchState = 0; // 0 not fetch, 1 fetching, 2 done
+
+const DEFAULT_ACCESS_MEMORY_STATE = {
+  username: "",
+};
 
 const isApp = getClientConfig()?.buildMode === "export";
 
@@ -134,13 +138,13 @@ export const useAccessStore = createPersistStore(
 
   (set, get) => ({
     enabledAccessControl() {
-      this.fetch();
+      this.syFetch();
 
       return get().needCode;
     },
 
     edgeVoiceName() {
-      this.fetch();
+      this.syFetch();
 
       return get().edgeTTSVoiceName;
     },
@@ -193,8 +197,9 @@ export const useAccessStore = createPersistStore(
     },
 
     isAuthorized() {
-      this.fetch();
+      this.syFetch();
 
+      const username = userAccessMemory.getState().username;
       // has token or has code or disabled access control
       return (
         this.isValidOpenAI() ||
@@ -210,7 +215,9 @@ export const useAccessStore = createPersistStore(
         this.isValidXAI() ||
         this.isValidChatGLM() ||
         !this.enabledAccessControl() ||
-        (this.enabledAccessControl() && ensure(get(), ["accessCode"]))
+        (this.enabledAccessControl() &&
+          ensure(get(), ["accessCode"]) &&
+          !username)
       );
     },
     fetch() {
@@ -245,6 +252,43 @@ export const useAccessStore = createPersistStore(
           fetchState = 2;
         });
     },
+    syFetch() {
+      if (fetchState > 0 || getClientConfig()?.buildMode === "export") return;
+      fetchState = 1;
+      const username = userAccessMemory.getState().username;
+      if (!username) {
+        fetchState = 0;
+        return;
+      }
+
+      // fetch token from server if username exists
+      fetch("/api/getcode", {
+        method: "post",
+        body: JSON.stringify({
+          name: username,
+          type: "User",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+        .then(async (res) => {
+          if (res.status !== 200) {
+            fetchState = 0;
+            return;
+          }
+          const body = await res.json();
+          const code = body.code;
+          get().update((state) => {
+            state.accessCode = code;
+          });
+        })
+        .finally(() => {
+          fetchState = 2;
+        });
+    },
   }),
   {
     name: StoreKey.Access,
@@ -264,4 +308,14 @@ export const useAccessStore = createPersistStore(
       return persistedState as any;
     },
   },
+);
+
+export const userAccessMemory = createMemoryStore(
+  { ...DEFAULT_ACCESS_MEMORY_STATE },
+
+  (set, get) => ({
+    isUsernameExist() {
+      return !!get().username;
+    },
+  }),
 );
