@@ -1610,7 +1610,15 @@ function _Chat() {
   }, [messages, chatStore, navigate]);
 
   const [showChatSidePanel, setShowChatSidePanel] = useState(false);
-
+  let tipsStyle = {
+    padding: "5px 11px",
+    margin: "10px",
+    border: "1px solid var(--primary)",
+    borderRadius: "10px",
+    backgroundColor: "var(--second)",
+    fontFamily: "Arial, sans-serif",
+    color: "rgba(102, 81, 225, 1)",
+  };
   return (
     <>
       <div className={styles.chat} key={session.id}>
@@ -1643,6 +1651,9 @@ function _Chat() {
             <div className="window-header-sub-title">
               {Locale.Chat.SubTitle(session.messages.length)}
             </div>
+          </div>
+          <div style={tipsStyle}>
+            温馨提示：使用AI工具时，请遵守工作相关性、合法合规、保密性原则！！
           </div>
           <div className="window-actions">
             <div className="window-action-button">
