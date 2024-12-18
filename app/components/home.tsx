@@ -228,6 +228,7 @@ export function useLoadData() {
 const serverConfig = getServerSideConfig();
 export function Home() {
   const trustedDomains = serverConfig.trustedDomains;
+  const [globalAccess, setGlobalAccess] = useState(false);
   useSwitchTheme();
   useLoadData();
   useHtmlLang();
@@ -265,6 +266,7 @@ export function Home() {
         localStorage.setItem("tianzhi_token", data.token);
         localStorage.setItem("parent_host", data.host);
         useAccessStore.getState().syFetch();
+        setGlobalAccess(true);
       } catch (e) {
         console.error("Parsing message failed", e);
       }
@@ -273,15 +275,21 @@ export function Home() {
   );
   useEffect(() => {
     window.addEventListener("message", handleMessage);
+    //测试代码--start
     userAccessMemory.getState().update((state) => {
       state.username = "郭钟文";
     });
     useAccessStore.getState().syFetch();
+    setGlobalAccess(true);
+    //测试代码--end
     return () => {
       window.removeEventListener("message", handleMessage);
     };
   }, [handleMessage]);
   if (!useHasHydrated()) {
+    return <Loading />;
+  }
+  if (!globalAccess) {
     return <Loading />;
   }
 
