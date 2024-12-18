@@ -10,6 +10,7 @@ import {
   ModelType,
   useAccessStore,
   useChatStore,
+  userAccessMemory,
 } from "../store";
 import { ChatGPTApi, DalleRequestPayload } from "./platforms/openai";
 import { GeminiProApi } from "./platforms/google";
@@ -226,6 +227,7 @@ export function validString(x: string): boolean {
 
 export function getHeaders(ignoreHeaders: boolean = false) {
   const accessStore = useAccessStore.getState();
+  const accessMemory = userAccessMemory.getState();
   const chatStore = useChatStore.getState();
   let headers: Record<string, string> = {};
   if (!ignoreHeaders) {
@@ -305,6 +307,11 @@ export function getHeaders(ignoreHeaders: boolean = false) {
     apiKey,
     isEnabledAccessControl,
   } = getConfig();
+
+  const username = accessMemory.username;
+  if (!validString(username)) {
+    return;
+  }
   // when using baidu api in app, not set auth header
   if (isBaidu && clientConfig?.isApp) return headers;
 
