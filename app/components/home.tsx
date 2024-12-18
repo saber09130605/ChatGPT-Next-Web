@@ -237,7 +237,6 @@ export function Home() {
   //   useAccessStore.getState().fetch();
   // }, []);
   // 新增状态，控制Loading组件显示
-  const [isLoading, setIsLoading] = useState(true);
   const handleMessage = useCallback(
     (event: MessageEvent) => {
       if (!event.data) {
@@ -266,7 +265,6 @@ export function Home() {
         localStorage.setItem("tianzhi_token", data.token);
         localStorage.setItem("parent_host", data.host);
         useAccessStore.getState().syFetch();
-        setIsLoading(false);
       } catch (e) {
         console.error("Parsing message failed", e);
       }
@@ -275,12 +273,15 @@ export function Home() {
   );
   useEffect(() => {
     window.addEventListener("message", handleMessage);
-
+    userAccessMemory.getState().update((state) => {
+      state.username = "郭钟文";
+    });
+    useAccessStore.getState().syFetch();
     return () => {
       window.removeEventListener("message", handleMessage);
     };
   }, [handleMessage]);
-  if (!useHasHydrated() || isLoading) {
+  if (!useHasHydrated()) {
     return <Loading />;
   }
 

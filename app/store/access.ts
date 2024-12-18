@@ -283,6 +283,7 @@ export const useAccessStore = createPersistStore(
           const code = body.code;
           get().update((state) => {
             state.accessCode = code;
+            console.log({ state });
           });
         })
         .finally(() => {
