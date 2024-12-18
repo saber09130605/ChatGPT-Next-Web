@@ -204,20 +204,10 @@ export const useAccessStore = createPersistStore(
       return (
         this.isValidOpenAI() ||
         this.isValidAzure() ||
-        this.isValidGoogle() ||
-        this.isValidAnthropic() ||
-        this.isValidBaidu() ||
-        this.isValidByteDance() ||
-        this.isValidAlibaba() ||
-        this.isValidTencent() ||
-        this.isValidMoonshot() ||
-        this.isValidIflytek() ||
-        this.isValidXAI() ||
-        this.isValidChatGLM() ||
         !this.enabledAccessControl() ||
         (this.enabledAccessControl() &&
-          ensure(get(), ["accessCode"]) &&
-          !username)
+          !username &&
+          ensure(get(), ["accessCode"]))
       );
     },
     fetch() {
