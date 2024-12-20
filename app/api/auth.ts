@@ -35,7 +35,7 @@ export function auth(req: NextRequest, modelProvider: ModelProvider) {
   console.log("[Auth] got access code:", accessCode);
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
-  console.log({ serverConfig });
+  console.log({ needCode: serverConfig.needCode, apiKey });
   if (serverConfig.needCode && !apiKey) {
     return {
       error: true,
