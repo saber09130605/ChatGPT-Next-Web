@@ -265,6 +265,7 @@ export const useAccessStore = createPersistStore(
         },
       })
         .then(async (res) => {
+          console.log({ res });
           if (res.status !== 200) {
             fetchState = 0;
             return;
