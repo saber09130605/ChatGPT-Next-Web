@@ -248,6 +248,8 @@ export function Home() {
       // 检查消息来源，确保安全性
       const trusted =
         trustedDomains.length === 0 || trustedDomains.includes(event.origin);
+      console.log("trusted", trusted);
+      console.log("trustedDomains", trustedDomains);
       if (!trusted) {
         return;
       }
