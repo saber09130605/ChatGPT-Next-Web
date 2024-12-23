@@ -276,11 +276,11 @@ export function Home() {
   useEffect(() => {
     window.addEventListener("message", handleMessage);
     //测试代码--start
-    userAccessMemory.getState().update((state) => {
-      state.username = "郭钟文";
-    });
-    useAccessStore.getState().syFetch();
-    setGlobalAccess(true);
+    // userAccessMemory.getState().update((state) => {
+    //   state.username = "郭钟文";
+    // });
+    // useAccessStore.getState().syFetch();
+    // setGlobalAccess(true);
     //测试代码--end
     return () => {
       window.removeEventListener("message", handleMessage);
