@@ -123,6 +123,7 @@ import { isEmpty } from "lodash-es";
 import { getModelProvider } from "../utils/model";
 import { RealtimeChat } from "@/app/components/realtime-chat";
 import clsx from "clsx";
+import { checkText } from "../utils/checkText";
 
 const localStorage = safeLocalStorage();
 
@@ -1053,8 +1054,12 @@ function _Chat() {
     }
   };
 
-  const doSubmit = (userInput: string) => {
+  const doSubmit = async (userInput: string) => {
     if (userInput.trim() === "" && isEmpty(attachImages)) return;
+    const checkTextResult = await checkText(userInput);
+    if (!checkTextResult) {
+      return;
+    }
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
       setUserInput("");
