@@ -1053,6 +1053,21 @@ function _Chat() {
     }
   };
 
+  const setUsage = () => {
+    const host = localStorage.getItem("parent_host") || "skycity.hiseven.cc";
+    const path = `/api/tianzhi/admin/siteUsage/ping?host=${host}`;
+    const token = localStorage.getItem("tianzhi_token");
+    let headers: HeadersInit = {
+      "Content-Type": "application/json", // 确保设置了Content-Type
+    };
+    if (token && typeof token == "string") {
+      headers.authorization = token;
+    }
+    fetch(path, {
+      method: "get",
+      headers,
+    });
+  };
   const doSubmit = async (userInput: string) => {
     if (userInput.trim() === "" && isEmpty(attachImages)) return;
     const checkTextResult = await checkText(userInput);
@@ -1060,6 +1075,7 @@ function _Chat() {
       return;
     }
     const matchCommand = chatCommands.match(userInput);
+    setUsage();
     if (matchCommand.matched) {
       setUserInput("");
       setPromptHints([]);
