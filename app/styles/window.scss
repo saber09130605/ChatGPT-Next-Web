@@ -29,6 +29,11 @@
 
 .window-actions {
   display: inline-flex;
+  &.ai-window-actions {
+    @media (max-width: 768px) {
+      width: 50px;
+    }
+  }
 }
 
 .window-action-button:not(:first-child) {

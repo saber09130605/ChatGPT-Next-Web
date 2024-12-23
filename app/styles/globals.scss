@@ -413,3 +413,21 @@ pre {
 .copyable {
   user-select: text;
 }
+
+.ai-tips-box {
+  flex: 1;
+  display: "flex";
+  justify-content: "center";
+  .ai-tips {
+    padding: 5px 11px;
+    margin: 10px;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    background-color: var(--second);
+    font-family: "Arial, sans-serif";
+    color: "rgba(102, 81, 225, 1)";
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+  }
+}

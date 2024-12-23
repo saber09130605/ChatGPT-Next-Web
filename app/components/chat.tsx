@@ -56,7 +56,6 @@ import {
   useAccessStore,
   Theme,
   useAppConfig,
-  DEFAULT_TOPIC,
   ModelType,
   usePluginStore,
 } from "../store";
@@ -1641,7 +1640,7 @@ function _Chat() {
             </div>
           )}
 
-          <div
+          {/* <div
             className={clsx("window-header-title", styles["chat-body-title"])}
           >
             <div
@@ -1656,11 +1655,14 @@ function _Chat() {
             <div className="window-header-sub-title">
               {Locale.Chat.SubTitle(session.messages.length)}
             </div>
+          </div> */}
+          <div className="ai-tips-box">
+            <div className="ai-tips">
+              温馨提示：使用AI工具时，请遵守工作相关性、合法合规、保密性原则！！
+            </div>
           </div>
-          <div style={tipsStyle}>
-            温馨提示：使用AI工具时，请遵守工作相关性、合法合规、保密性原则！！
-          </div>
-          <div className="window-actions">
+
+          <div className="window-actions ai-window-actions">
             <div className="window-action-button">
               <IconButton
                 icon={<ReloadIcon />}
