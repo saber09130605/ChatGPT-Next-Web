@@ -546,7 +546,7 @@
 
 .chat-message-user > .chat-message-container > .chat-message-item {
   background-color: var(--second);
-
+  border-color: rgba(102, 81, 255, 1);
   &:hover {
     min-width: 0;
   }
@@ -665,6 +665,10 @@
   position: absolute;
   right: 30px;
   bottom: 32px;
+  &:hover {
+    background-color: rgba(117, 96, 240, 1);
+    filter: none;
+  }
 }
 
 @media only screen and (max-width: 600px) {

@@ -112,6 +112,10 @@ export function NewChat() {
         (maskRef.current.scrollWidth - maskRef.current.clientWidth) / 2;
     }
   }, [groups]);
+  const buttonStyle = {
+    border: "1px solid var(--primary)",
+    color: "var(--primary)",
+  };
 
   return (
     <div className={styles["new-chat"]}>
@@ -157,6 +161,7 @@ export function NewChat() {
           icon={<EyeIcon />}
           bordered
           shadow
+          style={buttonStyle}
         />
 
         <IconButton

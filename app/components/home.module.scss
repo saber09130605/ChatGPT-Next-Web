@@ -42,7 +42,7 @@
   width: var(--sidebar-width);
   box-sizing: border-box;
   padding: 20px;
-  background-color: var(--second);
+  // background-color: var(--second);
   display: flex;
   flex-direction: column;
   box-shadow: inset -2px 0px 2px 0px rgb(0, 0, 0, 0.05);
@@ -55,6 +55,7 @@
 
     .sidebar-bar-button {
       flex-grow: 1;
+      border: 1px solid var(--primary);
 
       &:not(:last-child) {
         margin-right: 10px;
@@ -147,6 +148,8 @@
 
 .sidebar-logo {
   display: inline-flex;
+  color: var(--primary);
+  font-size: 44px;
 }
 
 .sidebar-title-container {
