@@ -240,6 +240,7 @@ export function Home() {
   // 新增状态，控制Loading组件显示
   const handleMessage = useCallback(
     (event: MessageEvent) => {
+      console.log("Received message from", event);
       if (!event.data) {
         return;
       }
