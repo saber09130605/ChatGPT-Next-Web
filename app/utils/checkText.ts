@@ -27,7 +27,7 @@ const checkdomain = () => {
 };
 const fileSearchBaseUrl = checkdomain()
   ? ""
-  : `${location.protocol}//${location.hostname}:80`;
+  : `${location.protocol}//${location.hostname}`;
 
 export async function checkText(text: string): Promise<boolean> {
   const chatPath = `${fileSearchBaseUrl}/checkText`;
