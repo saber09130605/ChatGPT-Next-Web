@@ -61,10 +61,7 @@ if (mode !== "export") {
       },
     ];
   };
-  console.log(
-    "NEXT_PUBLIC_TOKEN_SERVER:",
-    process.env.NEXT_PUBLIC_TOKEN_SERVER,
-  );
+
   nextConfig.rewrites = async () => {
     const ret = [
       // adjust for previous version directly using "/api/proxy/" as proxy base route
@@ -73,15 +70,13 @@ if (mode !== "export") {
       //   destination: "https://api.openai.com/v1/:path*",
       // },
       {
-        source: "/api/getcode",
+        source: '/api/getcode',
         destination: process.env.NEXT_PUBLIC_TOKEN_SERVER, // 代理目标
       },
       {
         // https://{resource_name}.openai.azure.com/openai/deployments/{deploy_name}/chat/completions
-        source:
-          "/api/proxy/azure/:resource_name/deployments/:deploy_name/:path*",
-        destination:
-          "https://:resource_name.openai.azure.com/openai/deployments/:deploy_name/:path*",
+        source: "/api/proxy/azure/:resource_name/deployments/:deploy_name/:path*",
+        destination: "https://:resource_name.openai.azure.com/openai/deployments/:deploy_name/:path*",
       },
       {
         source: "/api/proxy/google/:path*",
@@ -108,7 +103,7 @@ if (mode !== "export") {
         destination: "https://dashscope.aliyuncs.com/api/:path*",
       },
     ];
-
+    
     return {
       beforeFiles: ret,
     };
