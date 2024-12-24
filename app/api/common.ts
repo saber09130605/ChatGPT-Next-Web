@@ -8,6 +8,7 @@ import { parse } from "cookie";
 const serverConfig = getServerSideConfig();
 
 export async function requestOpenai(req: NextRequest) {
+  const reqClone = req.clone();
   const controller = new AbortController();
 
   const isAzure = req.nextUrl.pathname.includes("azure/deployments");
@@ -144,7 +145,7 @@ export async function requestOpenai(req: NextRequest) {
       console.error("[OpenAI] gpt4 filter", e);
     }
   }
-  const reqClone = req.clone();
+
   const cookiesHeader = reqClone.headers.get("cookie");
   const cookies = cookiesHeader ? parse(cookiesHeader) : {};
   const cacheCode = cookies.cachecode;
