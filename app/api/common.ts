@@ -3,6 +3,7 @@ import { getServerSideConfig } from "../config/server";
 import { OPENAI_BASE_URL, ServiceProvider } from "../constant";
 import { cloudflareAIGatewayUrl } from "../utils/cloudflare";
 import { getModelProvider, isModelAvailableInServer } from "../utils/model";
+import { parse } from "cookie";
 
 const serverConfig = getServerSideConfig();
 
@@ -143,9 +144,33 @@ export async function requestOpenai(req: NextRequest) {
       console.error("[OpenAI] gpt4 filter", e);
     }
   }
-
+  const reqClone = req.clone();
+  const cookiesHeader = reqClone.headers.get("cookie");
+  const cookies = cookiesHeader ? parse(cookiesHeader) : {};
+  const cacheCode = cookies.cachecode;
+  const code = req.headers.get("code");
+  const apifetchOptions: RequestInit = {
+    // @ts-ignore
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+      [authHeaderName]: authValue,
+      CacheCode: cacheCode,
+      Code: code,
+      // ...(serverConfig.openaiOrgId && {
+      //   "OpenAI-Organization": serverConfig.openaiOrgId,
+      // }),
+    },
+    method: req.method,
+    body: reqClone.body,
+    // to fix #2485: https://stackoverflow.com/questions/55920957/cloudflare-worker-typeerror-one-time-use-body
+    redirect: "manual",
+    // @ts-ignore
+    duplex: "half",
+    signal: controller.signal,
+  };
   try {
-    fetch("http://localhost:56521/api/verifyinput", fetchOptions);
+    fetch("http://localhost:56521/api/verifyinput", apifetchOptions);
     const res = await fetch(fetchUrl, fetchOptions);
 
     // Extract the OpenAI-Organization header from the response
