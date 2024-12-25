@@ -976,7 +976,7 @@ function _Chat() {
   // if user is typing, should auto scroll to bottom
   // if user is not typing, should auto scroll to bottom only if already at bottom
   const { setAutoScroll, scrollDomToBottom } = useScrollToBottom(
-    scrollRef as RefObject<HTMLDivElement>,
+    scrollRef,
     (isScrolledToBottom || isAttachWithTop) && !isTyping,
   );
   const [hitBottom, setHitBottom] = useState(true);
