@@ -21,7 +21,8 @@ export const BAIDU_OATUH_URL = `${BAIDU_BASE_URL}/oauth/2.0/token`;
 
 export const BYTEDANCE_BASE_URL = "https://ark.cn-beijing.volces.com";
 
-export const ALIBABA_BASE_URL = "https://dashscope.aliyuncs.com/api/";
+// export const ALIBABA_BASE_URL = "https://dashscope.aliyuncs.com/api/";
+export const ALIBABA_BASE_URL = "http://172.30.13.162:11434/";
 
 export const TENCENT_BASE_URL = "https://hunyuan.tencentcloudapi.com";
 
