@@ -263,7 +263,7 @@ export class QwenApi implements LLMApi {
                 remainText += delta;
               }
             } catch (e) {
-              console.error("[Request] parse error", text, msg);
+              console.error("[Request] parse error", text, msg, e);
             }
           },
           onclose() {
