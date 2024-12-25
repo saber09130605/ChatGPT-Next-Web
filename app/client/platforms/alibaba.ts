@@ -48,10 +48,24 @@ interface RequestParam {
   top_p: number;
   max_tokens?: number;
 }
+// interface RequestPayload {
+//   model: string;
+//   input: RequestInput;
+//   parameters: RequestParam;
+// }
+
 interface RequestPayload {
   model: string;
-  input: RequestInput;
-  parameters: RequestParam;
+  messages: {
+    role: "system" | "user" | "assistant";
+    content: string | MultimodalContent[];
+  }[];
+  stream: true;
+  presence_penalty?: number;
+  temperature: number;
+  frequency_penalty?: number;
+  top_p: number;
+  max_tokens?: number;
 }
 
 export class QwenApi implements LLMApi {

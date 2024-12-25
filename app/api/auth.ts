@@ -80,7 +80,8 @@ export function auth(req: NextRequest, modelProvider: ModelProvider) {
         systemApiKey = serverConfig.baiduApiKey;
         break;
       case ModelProvider.Qwen:
-        systemApiKey = serverConfig.alibabaApiKey;
+        // systemApiKey = serverConfig.alibabaApiKey;
+        systemApiKey = "alibabaqwenapikey";
         break;
       case ModelProvider.Moonshot:
         systemApiKey = serverConfig.moonshotApiKey;
