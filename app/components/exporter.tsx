@@ -365,7 +365,7 @@ export function PreviewActions(props: {
   return (
     <>
       <div className={styles["preview-actions"]}>
-        {props.showCopy && (
+        {/* {props.showCopy && (
           <IconButton
             text={Locale.Export.Copy}
             bordered
@@ -373,7 +373,7 @@ export function PreviewActions(props: {
             icon={<CopyIcon />}
             onClick={props.copy}
           ></IconButton>
-        )}
+        )} */}
         <IconButton
           text={Locale.Export.Download}
           bordered
@@ -381,13 +381,13 @@ export function PreviewActions(props: {
           icon={<DownloadIcon />}
           onClick={props.download}
         ></IconButton>
-        <IconButton
+        {/* <IconButton
           text={Locale.Export.Share}
           bordered
           shadow
           icon={loading ? <LoadingIcon /> : <ShareIcon />}
           onClick={share}
-        ></IconButton>
+        ></IconButton> */}
       </div>
       <div
         style={{
