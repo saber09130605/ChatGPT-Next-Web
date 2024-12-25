@@ -1679,7 +1679,7 @@ function _Chat() {
           </div>
 
           <div className="window-actions ai-window-actions">
-            <div className="window-action-button">
+            {/* <div className="window-action-button">
               <IconButton
                 icon={<ReloadIcon />}
                 bordered
@@ -1689,7 +1689,7 @@ function _Chat() {
                   chatStore.summarizeSession(true, session);
                 }}
               />
-            </div>
+            </div> */}
             {!isMobileScreen && (
               <div className="window-action-button">
                 <IconButton

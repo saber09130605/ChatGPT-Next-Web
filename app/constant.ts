@@ -292,25 +292,25 @@ export const DEFAULT_TTS_VOICES = [
 ];
 
 const openaiModels = [
-  "gpt-3.5-turbo",
-  "gpt-3.5-turbo-1106",
-  "gpt-3.5-turbo-0125",
-  "gpt-4",
-  "gpt-4-0613",
-  "gpt-4-32k",
-  "gpt-4-32k-0613",
-  "gpt-4-turbo",
-  "gpt-4-turbo-preview",
-  "gpt-4o",
-  "gpt-4o-2024-05-13",
-  "gpt-4o-2024-08-06",
+  // "gpt-3.5-turbo",
+  // "gpt-3.5-turbo-1106",
+  // "gpt-3.5-turbo-0125",
+  // "gpt-4",
+  // "gpt-4-0613",
+  // "gpt-4-32k",
+  // "gpt-4-32k-0613",
+  // "gpt-4-turbo",
+  // "gpt-4-turbo-preview",
+  // "gpt-4o",
+  // "gpt-4o-2024-05-13",
+  // "gpt-4o-2024-08-06",
   "gpt-4o-2024-11-20",
-  "chatgpt-4o-latest",
+  // "chatgpt-4o-latest",
   "gpt-4o-mini",
   "gpt-4o-mini-2024-07-18",
-  "gpt-4-vision-preview",
-  "gpt-4-turbo-2024-04-09",
-  "gpt-4-1106-preview",
+  // "gpt-4-vision-preview",
+  // "gpt-4-turbo-2024-04-09",
+  // "gpt-4-1106-preview",
   "dall-e-3",
   "o1-mini",
   "o1-preview",
@@ -327,17 +327,17 @@ const googleModels = [
 ];
 
 const anthropicModels = [
-  "claude-instant-1.2",
-  "claude-2.0",
-  "claude-2.1",
-  "claude-3-sonnet-20240229",
-  "claude-3-opus-20240229",
-  "claude-3-opus-latest",
-  "claude-3-haiku-20240307",
-  "claude-3-5-haiku-20241022",
+  // "claude-instant-1.2",
+  // "claude-2.0",
+  // "claude-2.1",
+  // "claude-3-sonnet-20240229",
+  // "claude-3-opus-20240229",
+  // "claude-3-opus-latest",
+  // "claude-3-haiku-20240307",
+  // "claude-3-5-haiku-20241022",
   "claude-3-5-haiku-latest",
-  "claude-3-5-sonnet-20240620",
-  "claude-3-5-sonnet-20241022",
+  // "claude-3-5-sonnet-20240620",
+  // "claude-3-5-sonnet-20241022",
   "claude-3-5-sonnet-latest",
 ];
 
@@ -365,23 +365,28 @@ const bytedanceModels = [
 ];
 
 const alibabaModes = [
-  "qwen-turbo",
-  "qwen-plus",
-  "qwen-max",
-  "qwen-max-0428",
-  "qwen-max-0403",
-  "qwen-max-0107",
-  "qwen-max-longcontext",
+  // "qwen-turbo",
+  // "qwen-plus",
+  // "qwen-max",
+  // "qwen-max-0428",
+  // "qwen-max-0403",
+  // "qwen-max-0107",
+  // "qwen-max-longcontext",
+  "qwen2.5:7b",
+  "qwen2.5:14b",
+  "qwen2.5-coder:latest",
+  "qwen2-math:latest",
 ];
 
 const tencentModels = [
-  "hunyuan-pro",
-  "hunyuan-standard",
-  "hunyuan-lite",
-  "hunyuan-role",
-  "hunyuan-functioncall",
-  "hunyuan-code",
-  "hunyuan-vision",
+  // "hunyuan-pro",
+  // "hunyuan-standard",
+  // "hunyuan-lite",
+  // "hunyuan-role",
+  // "hunyuan-functioncall",
+  // "hunyuan-code",
+  // "hunyuan-vision",
+  ""
 ];
 
 const moonshotModes = ["moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k"];
@@ -397,14 +402,15 @@ const iflytekModels = [
 const xAIModes = ["grok-beta"];
 
 const chatglmModels = [
-  "glm-4-plus",
-  "glm-4-0520",
-  "glm-4",
-  "glm-4-air",
-  "glm-4-airx",
-  "glm-4-long",
-  "glm-4-flashx",
-  "glm-4-flash",
+  // "glm-4-plus",
+  // "glm-4-0520",
+  // "glm-4",
+  // "glm-4-air",
+  // "glm-4-airx",
+  // "glm-4-long",
+  // "glm-4-flashx",
+  // "glm-4-flash",
+  ""
 ];
 
 let seq = 1000; // 内置的模型序号生成器从1000开始
@@ -566,5 +572,7 @@ export const PLUGINS = [
   { name: "Search Chat", path: Path.SearchChat },
 ];
 
-export const SAAS_CHAT_URL = "https://nextchat.dev/chat";
-export const SAAS_CHAT_UTM_URL = "https://nextchat.dev/chat?utm=github";
+// export const SAAS_CHAT_URL = "https://nextchat.dev/chat";
+export const SAAS_CHAT_URL = "/";
+// export const SAAS_CHAT_UTM_URL = "https://nextchat.dev/chat?utm=github";
+export const SAAS_CHAT_UTM_URL = "/";
