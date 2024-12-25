@@ -48,25 +48,25 @@ interface RequestParam {
   top_p: number;
   max_tokens?: number;
 }
-// interface RequestPayload {
-//   model: string;
-//   input: RequestInput;
-//   parameters: RequestParam;
-// }
-
 interface RequestPayload {
   model: string;
-  messages: {
-    role: "system" | "user" | "assistant";
-    content: string | MultimodalContent[];
-  }[];
-  stream: true;
-  presence_penalty?: number;
-  temperature: number;
-  frequency_penalty?: number;
-  top_p: number;
-  max_tokens?: number;
+  input: RequestInput;
+  parameters: RequestParam;
 }
+
+// interface RequestPayload {
+//   model: string;
+//   messages: {
+//     role: "system" | "user" | "assistant";
+//     content: string | MultimodalContent[];
+//   }[];
+//   stream: true;
+//   presence_penalty?: number;
+//   temperature: number;
+//   frequency_penalty?: number;
+//   top_p: number;
+//   max_tokens?: number;
+// }
 
 export class QwenApi implements LLMApi {
   path(path: string): string {
@@ -119,17 +119,25 @@ export class QwenApi implements LLMApi {
 
     const shouldStream = !!options.config.stream;
     const requestPayload: RequestPayload = {
+      // model: modelConfig.model,
+      // input: {
+      //   messages,
+      // },
+      // parameters: {
+      //   result_format: "message",
+      //   incremental_output: shouldStream,
+      //   temperature: modelConfig.temperature,
+      //   // max_tokens: modelConfig.max_tokens,
+      //   top_p: modelConfig.top_p === 1 ? 0.99 : modelConfig.top_p, // qwen top_p is should be < 1
+      // },
       model: modelConfig.model,
-      input: {
-        messages,
-      },
-      parameters: {
-        result_format: "message",
-        incremental_output: shouldStream,
-        temperature: modelConfig.temperature,
-        // max_tokens: modelConfig.max_tokens,
-        top_p: modelConfig.top_p === 1 ? 0.99 : modelConfig.top_p, // qwen top_p is should be < 1
-      },
+      messages,
+      stream: true,
+      presence_penalty: modelConfig.presence_penalty,
+      temperature: modelConfig.temperature,
+      frequency_penalty: modelConfig.frequency_penalty,
+      top_p: modelConfig.top_p,
+      max_tokens: modelConfig.max_tokens,
     };
 
     const controller = new AbortController();
