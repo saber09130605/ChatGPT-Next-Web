@@ -133,7 +133,7 @@ export function Sd() {
               </div>
             </div>
 
-            <div className="window-actions">
+            {/* <div className="window-actions">
               {showMaxIcon && (
                 <div className="window-action-button">
                   <IconButton
@@ -148,7 +148,7 @@ export function Sd() {
                   />
                 </div>
               )}
-              {isMobileScreen && <SDIcon width={50} height={50} />}
+              {isMobileScreen && <SDIcon width={50} height={50} />} */}
             </div>
           </div>
           <div className={chatStyles["chat-body"]} ref={scrollRef}>
