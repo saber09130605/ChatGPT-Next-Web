@@ -148,8 +148,8 @@ export function Sd() {
                   />
                 </div>
               )}
-              {isMobileScreen && <SDIcon width={50} height={50} />} */}
-            </div>
+              {isMobileScreen && <SDIcon width={50} height={50} />}
+            </div> */}
           </div>
           <div className={chatStyles["chat-body"]} ref={scrollRef}>
             <div className={styles["sd-img-list"]}>
