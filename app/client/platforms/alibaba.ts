@@ -254,7 +254,7 @@ export class QwenApi implements LLMApi {
               const json = JSON.parse(text);
               console.log(json);
               const choices = json.output.choices as Array<{
-                message: { content: string };
+                message: { role: string, content: string };
               }>;
               console.log(choices);
               const delta = choices[0]?.message?.content;
