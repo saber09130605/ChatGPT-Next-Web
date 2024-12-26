@@ -5,6 +5,7 @@ export async function searchAi(req: NextRequest) {
   const zoomModel = cloneBody?.zoomModel;
   const lastMessages = cloneBody?.messages.slice(-1)[0];
   console.log("zoomModel", zoomModel);
+  console.log("lastMessages", lastMessages);
   if (zoomModel && zoomModel != "none" && lastMessages.role == "user") {
     const content = lastMessages.content;
     try {
