@@ -21,8 +21,6 @@ import LoadingIcon from "../icons/three-dots.svg";
 import LoadingButtonIcon from "../icons/loading.svg";
 import PromptIcon from "../icons/prompt.svg";
 import MaskIcon from "../icons/mask.svg";
-import MaxIcon from "../icons/max.svg";
-import MinIcon from "../icons/min.svg";
 import ResetIcon from "../icons/reload.svg";
 import BreakIcon from "../icons/break.svg";
 import SettingsIcon from "../icons/chat-settings.svg";
@@ -43,10 +41,9 @@ import RobotIcon from "../icons/robot.svg";
 import SizeIcon from "../icons/size.svg";
 import QualityIcon from "../icons/hd.svg";
 import StyleIcon from "../icons/palette.svg";
-import PluginIcon from "../icons/plugin.svg";
 import ShortcutkeyIcon from "../icons/shortcutkey.svg";
-import ReloadIcon from "../icons/reload.svg";
 import HeadphoneIcon from "../icons/headphone.svg";
+import ZoomIcon from "../icons/zoom.svg";
 import {
   ChatMessage,
   SubmitKey,
@@ -58,6 +55,7 @@ import {
   useAppConfig,
   ModelType,
   usePluginStore,
+  ZoomModel,
 } from "../store";
 
 import {
@@ -69,7 +67,6 @@ import {
   getMessageImages,
   isVisionModel,
   isDalle3,
-  showPlugins,
   safeLocalStorage,
 } from "../utils";
 
@@ -103,6 +100,7 @@ import {
   REQUEST_TIMEOUT_MS,
   UNFINISHED_INPUT,
   ServiceProvider,
+  DEFAULT_ZOOM_MODELS,
 } from "../constant";
 import { Avatar } from "./emoji";
 import { ContextPrompts, MaskAvatar, MaskConfig } from "./mask";
@@ -513,6 +511,7 @@ export function ChatActions(props: {
     return model?.displayName ?? "";
   }, [models, currentModel, currentProviderName]);
   const [showModelSelector, setShowModelSelector] = useState(false);
+  const [showZoomModelSelector, setShowZoomModelSelector] = useState(false);
   const [showPluginSelector, setShowPluginSelector] = useState(false);
   const [showUploadImage, setShowUploadImage] = useState(false);
 
@@ -554,6 +553,8 @@ export function ChatActions(props: {
       );
     }
   }, [chatStore, currentModel, models, session]);
+  const zoomModels = DEFAULT_ZOOM_MODELS;
+  const currentZoomModel = session.mask.modelConfig.zoomModel;
 
   return (
     <div className={styles["chat-input-actions"]}>
@@ -652,12 +653,22 @@ export function ChatActions(props: {
             onClose={() => setShowModelSelector(false)}
             onSelection={(s) => {
               if (s.length === 0) return;
+              const a = models.map((m) => ({
+                title: `${m.displayName}${
+                  m?.provider?.providerName
+                    ? " (" + m?.provider?.providerName + ")"
+                    : ""
+                }`,
+                value: `${m.name}@${m?.provider?.providerName}`,
+              }));
+              console.log({ s, a });
               const [model, providerName] = getModelProvider(s[0]);
               chatStore.updateTargetSession(session, (session) => {
                 session.mask.modelConfig.model = model as ModelType;
                 session.mask.modelConfig.providerName =
                   providerName as ServiceProvider;
                 session.mask.syncGlobalConfig = false;
+                session.mask.modelConfig.zoomModel = "none";
               });
               if (providerName == "ByteDance") {
                 const selectedModel = models.find(
@@ -669,6 +680,26 @@ export function ChatActions(props: {
               } else {
                 showToast(model);
               }
+            }}
+          />
+        )}
+        {chatStore.currentSession().mask.modelConfig.model == "o1-mini" && (
+          <ChatAction
+            onClick={() => setShowZoomModelSelector(true)}
+            text={"联网模式"}
+            icon={<ZoomIcon />}
+          />
+        )}
+        {showZoomModelSelector && (
+          <Selector
+            defaultSelectedValue={`${currentZoomModel}`}
+            onClose={() => setShowZoomModelSelector(false)}
+            items={zoomModels}
+            onSelection={(s) => {
+              if (s.length === 0) return;
+              chatStore.updateTargetSession(session, (session) => {
+                session.mask.modelConfig.zoomModel = s[0] as ZoomModel;
+              });
             }}
           />
         )}

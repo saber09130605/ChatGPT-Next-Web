@@ -13,6 +13,7 @@ import {
   DEFAULT_TTS_VOICES,
   StoreKey,
   ServiceProvider,
+  DEFAULT_ZOOM_MODELS,
 } from "../constant";
 import { createPersistStore } from "../utils/store";
 import type { Voice } from "rt-client";
@@ -22,6 +23,7 @@ export type ModelType = (typeof DEFAULT_MODELS)[number]["name"];
 export type TTSModelType = (typeof DEFAULT_TTS_MODELS)[number];
 export type TTSVoiceType = (typeof DEFAULT_TTS_VOICES)[number];
 export type TTSEngineType = (typeof DEFAULT_TTS_ENGINES)[number];
+export type ZoomModel = (typeof DEFAULT_ZOOM_MODELS)[number]["value"];
 
 export enum SubmitKey {
   Enter = "Enter",
@@ -83,6 +85,7 @@ export const DEFAULT_CONFIG = {
     size: "1024x1024" as DalleSize,
     quality: "standard" as DalleQuality,
     style: "vivid" as DalleStyle,
+    zoomModel: "none" as ZoomModel,
   },
 
   ttsConfig: {
@@ -203,6 +206,7 @@ export const useAppConfig = createPersistStore(
       const state = persistedState as ChatConfig | undefined;
       if (!state) return { ...currentState };
       const models = currentState.models.slice();
+
       state.models.forEach((pModel) => {
         const idx = models.findIndex(
           (v) => v.name === pModel.name && v.provider === pModel.provider,
@@ -210,7 +214,17 @@ export const useAppConfig = createPersistStore(
         if (idx !== -1) models[idx] = pModel;
         else models.push(pModel);
       });
-      return { ...currentState, ...state, models: models };
+      return {
+        ...currentState,
+        ...state,
+        models: models,
+        modelConfig: {
+          ...currentState.modelConfig,
+          ...state.modelConfig,
+          zoomModel:
+            state.modelConfig?.zoomModel || currentState.modelConfig.zoomModel,
+        },
+      };
     },
 
     migrate(persistedState, version) {
@@ -244,10 +258,10 @@ export const useAppConfig = createPersistStore(
       }
 
       if (version < 3.9) {
-        state.modelConfig.template =
-          state.modelConfig.template !== DEFAULT_INPUT_TEMPLATE
-            ? state.modelConfig.template
-            : config?.template ?? DEFAULT_INPUT_TEMPLATE;
+        state.modelConfig.compressModel =
+          DEFAULT_CONFIG.modelConfig.compressModel;
+        state.modelConfig.compressProviderName =
+          DEFAULT_CONFIG.modelConfig.compressProviderName;
       }
 
       if (version < 4.1) {
@@ -255,6 +269,11 @@ export const useAppConfig = createPersistStore(
           DEFAULT_CONFIG.modelConfig.compressModel;
         state.modelConfig.compressProviderName =
           DEFAULT_CONFIG.modelConfig.compressProviderName;
+      }
+
+      // 确保 zoomModel 被初始化
+      if (!state.modelConfig.zoomModel) {
+        state.modelConfig.zoomModel = DEFAULT_CONFIG.modelConfig.zoomModel;
       }
 
       return state as any;

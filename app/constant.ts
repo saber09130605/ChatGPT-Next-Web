@@ -387,7 +387,7 @@ const tencentModels = [
   // "hunyuan-functioncall",
   // "hunyuan-code",
   // "hunyuan-vision",
-  ""
+  "",
 ];
 
 const moonshotModes = ["moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k"];
@@ -411,7 +411,7 @@ const chatglmModels = [
   // "glm-4-long",
   // "glm-4-flashx",
   // "glm-4-flash",
-  ""
+  "",
 ];
 
 let seq = 1000; // 内置的模型序号生成器从1000开始
@@ -577,3 +577,18 @@ export const PLUGINS = [
 export const SAAS_CHAT_URL = "/";
 // export const SAAS_CHAT_UTM_URL = "https://nextchat.dev/chat?utm=github";
 export const SAAS_CHAT_UTM_URL = "/";
+
+export const DEFAULT_ZOOM_MODELS = [
+  {
+    title: "无",
+    value: "none",
+  },
+  {
+    title: "一般",
+    value: "general",
+  },
+  {
+    title: "新闻",
+    value: "news",
+  },
+];
