@@ -29,6 +29,7 @@ export async function searchAi(req: NextRequest) {
         },
       ];
       cloneBody.messages = afterMessages;
+      delete cloneBody.zoomModel;
       console.log("messages ", cloneBody.messages);
       // 创建新的请求对象
       const modifiedReq = new NextRequest(req.url, {

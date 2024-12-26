@@ -231,11 +231,13 @@ export class ChatGPTApi implements LLMApi {
         presence_penalty: !isO1 ? modelConfig.presence_penalty : 0,
         frequency_penalty: !isO1 ? modelConfig.frequency_penalty : 0,
         top_p: !isO1 ? modelConfig.top_p : 1,
-        zoomModel: modelConfig.zoomModel,
         // max_tokens: Math.max(modelConfig.max_tokens, 1024),
         // Please do not ask me why not send max_tokens, no reason, this param is just shit, I dont want to explain anymore.
       };
 
+      if (modelConfig.zoomModel && modelConfig.zoomModel !== "none") {
+        requestPayload["zoomModel"] = modelConfig.zoomModel;
+      }
       // O1 使用 max_completion_tokens 控制token数 (https://platform.openai.com/docs/guides/reasoning#controlling-costs)
       if (isO1) {
         requestPayload["max_completion_tokens"] = modelConfig.max_tokens;
