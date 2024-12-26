@@ -26,7 +26,7 @@ export async function searchAi(req: NextRequest) {
         {
           role: "tool",
           name: zoomModel,
-          content: results,
+          content: JSON.stringify(results),
         },
       ];
       cloneBody.messages = afterMessages;
