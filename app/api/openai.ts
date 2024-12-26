@@ -5,6 +5,7 @@ import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { requestOpenai } from "./common";
+import { searchAi } from "./searchAi";
 
 const ALLOWED_PATH = new Set(Object.values(OpenaiPath));
 
@@ -14,8 +15,11 @@ function getModels(remoteModelRes: OpenAIListModelResponse) {
   if (config.disableGPT4) {
     remoteModelRes.data = remoteModelRes.data.filter(
       (m) =>
-        !(m.id.startsWith("gpt-4") || m.id.startsWith("chatgpt-4o") || m.id.startsWith("o1")) ||
-        m.id.startsWith("gpt-4o-mini"),
+        !(
+          m.id.startsWith("gpt-4") ||
+          m.id.startsWith("chatgpt-4o") ||
+          m.id.startsWith("o1")
+        ) || m.id.startsWith("gpt-4o-mini"),
     );
   }
 
@@ -55,7 +59,8 @@ export async function handle(
   }
 
   try {
-    const response = await requestOpenai(req);
+    const searchReq = await searchAi(req);
+    const response = await requestOpenai(searchReq ? searchReq : req);
 
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
