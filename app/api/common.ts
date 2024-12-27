@@ -171,11 +171,7 @@ export async function requestOpenai(req: NextRequest) {
     signal: controller.signal,
   };
   try {
-    const verifyinputResult = await fetch(
-      "http://localhost:56521/api/verifyinput",
-      apifetchOptions,
-    );
-    console.log("verifyinputResult", verifyinputResult);
+    await fetch("http://localhost:56521/api/verifyinput", apifetchOptions);
     const res = await fetch(fetchUrl, fetchOptions);
 
     // Extract the OpenAI-Organization header from the response

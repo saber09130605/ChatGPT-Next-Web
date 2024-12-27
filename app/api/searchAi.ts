@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server";
-import { requestOpenai } from "./common";
 const tools = [
   {
     type: "function",
@@ -71,7 +70,7 @@ export async function searchAi(req: NextRequest) {
         (message: any) => message.role === "user",
       );
       cloneBody.messages = userMessages;
-      console.log("search ai request", cloneBody);
+      // console.log("search ai request", cloneBody);
       // 创建新的请求对象
       const modifiedReq = new NextRequest(req.url, {
         method: req.method,
@@ -79,12 +78,12 @@ export async function searchAi(req: NextRequest) {
         body: JSON.stringify(cloneBody),
       });
 
-      req = modifiedReq;
-      const response = await requestOpenai(req);
-      let data = await response.json();
-      console.log("确认解析后的 data 对象:", data);
+      // req = modifiedReq;
+      // const response = await requestOpenai(req);
+      // let data = await response.json();
+      // console.log("确认解析后的 data 对象:", data);
       // console.log("search ai response", response);
-      return undefined;
+      return modifiedReq;
     } catch (error) {
       return undefined;
     }
