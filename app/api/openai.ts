@@ -61,7 +61,7 @@ export async function handle(
   try {
     const searchReq = await searchAi(req);
     const response = await requestOpenai(searchReq ? searchReq : req);
-
+    console.log("[OpenAI Route] response ", response);
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
       const resJson = (await response.json()) as OpenAIListModelResponse;
