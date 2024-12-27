@@ -1,47 +1,13 @@
 import { NextRequest } from "next/server";
 import { requestOpenai } from "../common";
 import { news, general } from "./handleFunction";
+import { tools } from "./searchAiConstant";
 
-const tools = [
-  {
-    type: "function",
-    function: {
-      name: "general",
-      description: "search for factors",
-      parameters: {
-        type: "object",
-        properties: {
-          query: { type: "string", description: "The query to search." },
-        },
-        required: ["query"],
-      },
-    },
-  },
-  {
-    type: "function",
-    function: {
-      name: "news",
-      description: "Search for news",
-      parameters: {
-        type: "object",
-        properties: {
-          query: {
-            type: "string",
-            description: "The query to search for news.",
-          },
-        },
-        required: ["query"],
-      },
-    },
-  },
-];
 export async function searchAi(req: NextRequest) {
   const reqClone = req.clone();
   const cloneBody = await reqClone.json();
   const zoomModel = cloneBody?.zoomModel;
   const lastMessages = cloneBody?.messages.slice(-1)[0];
-  console.log("zoomModel", zoomModel);
-  console.log("lastMessages", lastMessages);
   if (zoomModel && zoomModel != "none" && lastMessages.role == "user") {
     try {
       const userMessages = cloneBody.messages.filter(
@@ -62,7 +28,7 @@ export async function searchAi(req: NextRequest) {
       });
       const response = await requestOpenai(searchReq);
       const searchData = await response.json();
-      console.log("searchData", searchData);
+      // console.log("searchData", searchData);
       delete cloneBody.zoomModel;
       const modifiedMessages = [
         ...cloneBody.messages,
