@@ -43,7 +43,8 @@ import QualityIcon from "../icons/hd.svg";
 import StyleIcon from "../icons/palette.svg";
 import ShortcutkeyIcon from "../icons/shortcutkey.svg";
 import HeadphoneIcon from "../icons/headphone.svg";
-import ZoomIcon from "../icons/zoom.svg";
+import NetworkIcon from "../icons/network.svg";
+import BitNetworkIcon from "../icons/bit-network.svg";
 import {
   ChatMessage,
   SubmitKey,
@@ -55,7 +56,6 @@ import {
   useAppConfig,
   ModelType,
   usePluginStore,
-  ZoomModel,
 } from "../store";
 
 import {
@@ -686,24 +686,42 @@ export function ChatActions(props: {
         {chatStore.currentSession().mask.modelConfig.model ==
           "gpt-4o-2024-11-20" && (
           <ChatAction
-            onClick={() => setShowZoomModelSelector(true)}
-            text={"联网模式"}
-            icon={<ZoomIcon />}
+            onClick={() => {
+              chatStore.updateTargetSession(session, (session) => {
+                const zoomModel = session.mask.modelConfig.zoomModel;
+                session.mask.modelConfig.zoomModel =
+                  zoomModel == "none" ? "news" : "none";
+              });
+            }}
+            text={
+              chatStore.currentSession().mask.modelConfig.zoomModel == "none"
+                ? "断网查询"
+                : "联网查询"
+            }
+            icon={
+              <>
+                {" "}
+                {chatStore.currentSession().mask.modelConfig.zoomModel ==
+                "none" ? (
+                  <BitNetworkIcon />
+                ) : (
+                  <NetworkIcon />
+                )}{" "}
+              </>
+            }
           />
         )}
-        {showZoomModelSelector && (
+        {/* {showZoomModelSelector && (
           <Selector
             defaultSelectedValue={`${currentZoomModel}`}
             onClose={() => setShowZoomModelSelector(false)}
             items={zoomModels}
             onSelection={(s) => {
               if (s.length === 0) return;
-              chatStore.updateTargetSession(session, (session) => {
-                session.mask.modelConfig.zoomModel = s[0] as ZoomModel;
-              });
+              
             }}
           />
-        )}
+        )} */}
 
         {isDalle3(currentModel) && (
           <ChatAction
