@@ -58,18 +58,22 @@ export async function searchAi(req: NextRequest) {
       // ];
       // cloneBody.messages = afterMessages;
       delete cloneBody.zoomModel;
-      cloneBody.tools = tools;
-      cloneBody.tool_choice = "auto";
       const userMessages = cloneBody.messages.filter(
         (message: any) => message.role === "user",
       );
-      cloneBody.messages = userMessages;
-      console.log("search ai request", cloneBody);
+      const newBody = {
+        model: cloneBody.model,
+        messages: userMessages,
+        max_tokens: 3000,
+        tools: tools,
+        tool_choice: "auto",
+      };
+      console.log("search ai newBody", newBody);
       // 创建新的请求对象
       const modifiedReq = new NextRequest(req.url, {
         method: req.method,
         headers: req.headers,
-        body: JSON.stringify(cloneBody),
+        body: JSON.stringify(newBody),
       });
 
       // req = modifiedReq;
