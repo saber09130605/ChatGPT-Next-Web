@@ -6,9 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { requestOpenai } from "./common";
 import { searchAi } from "./searchAi/searchAi";
-import { news, general } from "./searchAi/handleFunction";
-console.log("news", news);
-console.log("general", general);
+
 const ALLOWED_PATH = new Set(Object.values(OpenaiPath));
 
 function getModels(remoteModelRes: OpenAIListModelResponse) {

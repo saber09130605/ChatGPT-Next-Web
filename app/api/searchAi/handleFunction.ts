@@ -7,9 +7,20 @@ export async function news(query: any) {
       )}&category=news&format=json`,
     );
     const searXNGData = await searXNGResponse.json();
-    console.log("searXNGData", searXNGData);
+    const results = searXNGData.results.slice(0, 5).map((item: any) => ({
+      title: item?.title || "",
+      link: item?.url || "",
+      snippet: item?.content || "",
+    }));
+    const data = {
+      results: results,
+    };
+
+    console.log("新闻搜索服务调用完成");
+    return JSON.stringify(data);
   } catch (error) {
-    console.error("新闻搜索失败", error);
+    console.error(`在 news 函数中捕获到错误: ${error}`);
+    return `在 news 函数中捕获到错误: ${error}`;
   }
 }
 export async function general(query: any) {
@@ -21,8 +32,19 @@ export async function general(query: any) {
       )}&category=general&format=json`,
     );
     const searXNGData = await searXNGResponse.json();
-    console.log("searXNGData", searXNGData);
+    const results = searXNGData.results.slice(0, 5).map((item: any) => ({
+      title: item?.title || "",
+      link: item?.url || "",
+      snippet: item?.content || "",
+    }));
+    const data = {
+      results: results,
+    };
+
+    console.log("新闻搜索服务调用完成");
+    return JSON.stringify(data);
   } catch (error) {
-    console.error("社群搜索失败", error);
+    console.error(`在 general 函数中捕获到错误: ${error}`);
+    return `在 general 函数中捕获到错误: ${error}`;
   }
 }
