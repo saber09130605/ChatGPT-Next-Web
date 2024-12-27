@@ -42,12 +42,6 @@ export async function searchAi(req: NextRequest) {
   if (zoomModel && zoomModel != "none" && lastMessages.role == "user") {
     // const content = lastMessages.content;
     try {
-      // const searXNGResponse = await fetch(
-      //   `${process.env.NEXT_SEARXNG_BASE_URL}/search?q=${encodeURIComponent(
-      //     content,
-      //   )}&category=${zoomModel}&format=json`,
-      // );
-      // const searXNGData = await searXNGResponse.json();
       // const results = searXNGData.results.slice(0, 5).map((item: any) => ({
       //   title: item?.title || "",
       //   link: item?.url || "",
