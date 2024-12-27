@@ -70,7 +70,7 @@ export async function searchAi(req: NextRequest) {
         (message: any) => message.role === "user",
       );
       cloneBody.messages = userMessages;
-      // console.log("search ai request", cloneBody);
+      console.log("search ai request", cloneBody);
       // 创建新的请求对象
       const modifiedReq = new NextRequest(req.url, {
         method: req.method,
