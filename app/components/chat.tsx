@@ -683,7 +683,8 @@ export function ChatActions(props: {
             }}
           />
         )}
-        {chatStore.currentSession().mask.modelConfig.model == "o1-mini" && (
+        {chatStore.currentSession().mask.modelConfig.model ==
+          "gpt-4o-2024-11-20" && (
           <ChatAction
             onClick={() => setShowZoomModelSelector(true)}
             text={"联网模式"}
