@@ -60,7 +60,6 @@ export async function handle(
 
   try {
     const searchReq = await searchAi(req);
-    console.log("[OpenAI Route] searchReq ", searchReq?.clone());
     const response = await requestOpenai(searchReq ? searchReq : req);
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
