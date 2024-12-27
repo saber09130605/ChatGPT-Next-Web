@@ -43,23 +43,7 @@ export async function searchAi(req: NextRequest) {
   console.log("zoomModel", zoomModel);
   console.log("lastMessages", lastMessages);
   if (zoomModel && zoomModel != "none" && lastMessages.role == "user") {
-    // const content = lastMessages.content;
     try {
-      // const results = searXNGData.results.slice(0, 5).map((item: any) => ({
-      //   title: item?.title || "",
-      //   link: item?.url || "",
-      //   snippet: item?.content || "",
-      // }));
-      // const messages = cloneBody.messages;
-      // const afterMessages = [
-      //   ...messages,
-      //   {
-      //     role: "tool",
-      //     name: zoomModel,
-      //     content: JSON.stringify(results),
-      //   },
-      // ];
-      // cloneBody.messages = afterMessages;
       const userMessages = cloneBody.messages.filter(
         (message: any) => message.role === "user",
       );
@@ -126,4 +110,11 @@ export async function searchAi(req: NextRequest) {
       return undefined;
     }
   }
+  delete cloneBody.zoomModel;
+  const modifiedReq = new NextRequest(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: JSON.stringify(cloneBody),
+  });
+  return modifiedReq;
 }
