@@ -104,11 +104,12 @@ export async function searchAi(req: NextRequest) {
           headers: req.headers,
           body: JSON.stringify(cloneBody),
         });
-        return modifiedReq;
+        return {
+          request: modifiedReq,
+        };
       }
-    } catch (error) {
-      return undefined;
-    }
+      return { response };
+    } catch (error) {}
   }
   delete cloneBody.zoomModel;
   const modifiedReq = new NextRequest(req.url, {
@@ -116,5 +117,7 @@ export async function searchAi(req: NextRequest) {
     headers: req.headers,
     body: JSON.stringify(cloneBody),
   });
-  return modifiedReq;
+  return {
+    request: modifiedReq,
+  };
 }
