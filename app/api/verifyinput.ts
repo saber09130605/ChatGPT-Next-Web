@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { parse } from "cookie";
 import { ACCESS_CODE_PREFIX } from "../constant";
 export async function verifyInput(req: NextRequest) {
+  const reqClone = req.clone();
   const isAzure = req.nextUrl.pathname.includes("azure/deployments");
   const controller = new AbortController();
   let authValue,
@@ -40,7 +41,7 @@ export async function verifyInput(req: NextRequest) {
       // }),
     },
     method: req.method,
-    body: req.body,
+    body: reqClone.body,
     // to fix #2485: https://stackoverflow.com/questions/55920957/cloudflare-worker-typeerror-one-time-use-body
     redirect: "manual",
     // @ts-ignore
