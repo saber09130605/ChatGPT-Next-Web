@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { parse } from "cookie";
+import { ACCESS_CODE_PREFIX } from "../constant";
 export async function verifyInput(req: NextRequest) {
   const isAzure = req.nextUrl.pathname.includes("azure/deployments");
   const controller = new AbortController();
@@ -23,6 +24,9 @@ export async function verifyInput(req: NextRequest) {
   const cacheCode = cookies.cachecode;
   const code = req.headers.get("code");
   console.log("verifyInput authValue", authValue);
+  if (authValue.startsWith(ACCESS_CODE_PREFIX)) {
+    authValue = authValue.replace(ACCESS_CODE_PREFIX, "");
+  }
   const apifetchOptions: RequestInit = {
     // @ts-ignore
     headers: {
