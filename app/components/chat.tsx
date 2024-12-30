@@ -1026,7 +1026,7 @@ function _Chat() {
   // if user is typing, should auto scroll to bottom
   // if user is not typing, should auto scroll to bottom only if already at bottom
   const { setAutoScroll, scrollDomToBottom } = useScrollToBottom(
-    scrollRef,
+    scrollRef as React.RefObject<HTMLDivElement>,
     (isScrolledToBottom || isAttachWithTop) && !isTyping,
   );
   const [hitBottom, setHitBottom] = useState(true);
@@ -1993,7 +1993,9 @@ function _Chat() {
                             }}
                             fontSize={fontSize}
                             fontFamily={fontFamily}
-                            parentRef={scrollRef}
+                            parentRef={
+                              scrollRef as React.RefObject<HTMLDivElement>
+                            }
                             defaultShow={i >= messages.length - 6}
                           />
                           {getMessageImages(message).length == 1 && (
