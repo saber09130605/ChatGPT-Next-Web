@@ -460,28 +460,28 @@ export const DEFAULT_MODELS = [
       sorted: 4,
     },
   })),
-  ...baiduModels.map((name) => ({
-    name,
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "baidu",
-      providerName: "Baidu",
-      providerType: "baidu",
-      sorted: 5,
-    },
-  })),
-  ...bytedanceModels.map((name) => ({
-    name,
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "bytedance",
-      providerName: "ByteDance",
-      providerType: "bytedance",
-      sorted: 6,
-    },
-  })),
+  // ...baiduModels.map((name) => ({
+  //   name,
+  //   available: true,
+  //   sorted: seq++,
+  //   provider: {
+  //     id: "baidu",
+  //     providerName: "Baidu",
+  //     providerType: "baidu",
+  //     sorted: 5,
+  //   },
+  // })),
+  // ...bytedanceModels.map((name) => ({
+  //   name,
+  //   available: true,
+  //   sorted: seq++,
+  //   provider: {
+  //     id: "bytedance",
+  //     providerName: "ByteDance",
+  //     providerType: "bytedance",
+  //     sorted: 6,
+  //   },
+  // })),
   ...alibabaModes.map((name) => ({
     name,
     available: true,
@@ -515,17 +515,17 @@ export const DEFAULT_MODELS = [
   //     sorted: 9,
   //   },
   // })),
-  ...iflytekModels.map((name) => ({
-    name,
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "iflytek",
-      providerName: "Iflytek",
-      providerType: "iflytek",
-      sorted: 10,
-    },
-  })),
+  // ...iflytekModels.map((name) => ({
+  //   name,
+  //   available: true,
+  //   sorted: seq++,
+  //   provider: {
+  //     id: "iflytek",
+  //     providerName: "Iflytek",
+  //     providerType: "iflytek",
+  //     sorted: 10,
+  //   },
+  // })),
   // ...xAIModes.map((name) => ({
   //   name,
   //   available: true,
