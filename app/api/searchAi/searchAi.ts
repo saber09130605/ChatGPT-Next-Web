@@ -10,12 +10,9 @@ export async function searchAi(req: NextRequest) {
   const lastMessages = cloneBody?.messages.slice(-1)[0];
   if (zoomModel && zoomModel != "none" && lastMessages.role == "user") {
     try {
-      const userMessages = cloneBody.messages.filter(
-        (message: any) => message.role === "user",
-      );
       const searchBody = {
         model: cloneBody.model,
-        messages: userMessages,
+        messages: [lastMessages],
         max_tokens: 3000,
         tools: tools,
         tool_choice: "auto",
