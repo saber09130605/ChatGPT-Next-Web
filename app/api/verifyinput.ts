@@ -22,6 +22,7 @@ export async function verifyInput(req: NextRequest) {
   const cookies = cookiesHeader ? parse(cookiesHeader) : {};
   const cacheCode = cookies.cachecode;
   const code = req.headers.get("code");
+  console.log("verifyInput authValue", authValue);
   const apifetchOptions: RequestInit = {
     // @ts-ignore
     headers: {
