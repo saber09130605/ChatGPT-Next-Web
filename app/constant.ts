@@ -305,10 +305,10 @@ const openaiModels = [
   // "gpt-4o",
   // "gpt-4o-2024-05-13",
   // "gpt-4o-2024-08-06",
+  "gpt-4o-mini-2024-07-18",
   "gpt-4o-2024-11-20",
   // "chatgpt-4o-latest",
   // "gpt-4o-mini",
-  "gpt-4o-mini-2024-07-18",
   // "gpt-4-vision-preview",
   // "gpt-4-turbo-2024-04-09",
   // "gpt-4-1106-preview",
@@ -460,28 +460,28 @@ export const DEFAULT_MODELS = [
       sorted: 4,
     },
   })),
-  ...baiduModels.map((name) => ({
-    name,
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "baidu",
-      providerName: "Baidu",
-      providerType: "baidu",
-      sorted: 5,
-    },
-  })),
-  ...bytedanceModels.map((name) => ({
-    name,
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "bytedance",
-      providerName: "ByteDance",
-      providerType: "bytedance",
-      sorted: 6,
-    },
-  })),
+  // ...baiduModels.map((name) => ({
+  //   name,
+  //   available: true,
+  //   sorted: seq++,
+  //   provider: {
+  //     id: "baidu",
+  //     providerName: "Baidu",
+  //     providerType: "baidu",
+  //     sorted: 5,
+  //   },
+  // })),
+  // ...bytedanceModels.map((name) => ({
+  //   name,
+  //   available: true,
+  //   sorted: seq++,
+  //   provider: {
+  //     id: "bytedance",
+  //     providerName: "ByteDance",
+  //     providerType: "bytedance",
+  //     sorted: 6,
+  //   },
+  // })),
   ...alibabaModes.map((name) => ({
     name,
     available: true,
@@ -515,17 +515,17 @@ export const DEFAULT_MODELS = [
   //     sorted: 9,
   //   },
   // })),
-  ...iflytekModels.map((name) => ({
-    name,
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "iflytek",
-      providerName: "Iflytek",
-      providerType: "iflytek",
-      sorted: 10,
-    },
-  })),
+  // ...iflytekModels.map((name) => ({
+  //   name,
+  //   available: true,
+  //   sorted: seq++,
+  //   provider: {
+  //     id: "iflytek",
+  //     providerName: "Iflytek",
+  //     providerType: "iflytek",
+  //     sorted: 10,
+  //   },
+  // })),
   // ...xAIModes.map((name) => ({
   //   name,
   //   available: true,
@@ -574,9 +574,9 @@ export const PLUGINS = [
 ];
 
 // export const SAAS_CHAT_URL = "https://nextchat.dev/chat";
-export const SAAS_CHAT_URL = "/";
+export const SAAS_CHAT_URL = "https://skycity.hiseven.cc";
 // export const SAAS_CHAT_UTM_URL = "https://nextchat.dev/chat?utm=github";
-export const SAAS_CHAT_UTM_URL = "/";
+export const SAAS_CHAT_UTM_URL = "https://skycity.hiseven.cc";
 
 export const DEFAULT_ZOOM_MODELS = [
   {
