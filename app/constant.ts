@@ -574,9 +574,9 @@ export const PLUGINS = [
 ];
 
 // export const SAAS_CHAT_URL = "https://nextchat.dev/chat";
-export const SAAS_CHAT_URL = "/";
+export const SAAS_CHAT_URL = "https://skycity.hiseven.cc";
 // export const SAAS_CHAT_UTM_URL = "https://nextchat.dev/chat?utm=github";
-export const SAAS_CHAT_UTM_URL = "/";
+export const SAAS_CHAT_UTM_URL = "https://skycity.hiseven.cc";
 
 export const DEFAULT_ZOOM_MODELS = [
   {

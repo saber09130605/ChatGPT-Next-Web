@@ -9,11 +9,8 @@ const cs: PartialLocaleType = {
   Error: {
     Unauthorized: isApp
       ? `😆 Rozhovor narazil na nějaké problémy, nebojte se:
-    \\ 1️⃣ Pokud chcete začít bez konfigurace, [klikněte sem pro okamžitý začátek chatu 🚀](${SAAS_CHAT_UTM_URL})
     \\ 2️⃣ Pokud chcete využít své vlastní zdroje OpenAI, klikněte [sem](/#/settings) a upravte nastavení ⚙️`
       : `😆 Rozhovor narazil na nějaké problémy, nebojte se:
-    \ 1️⃣ Pokud chcete začít bez konfigurace, [klikněte sem pro okamžitý začátek chatu 🚀](${SAAS_CHAT_UTM_URL})
-    \ 2️⃣ Pokud používáte verzi soukromého nasazení, klikněte [sem](/#/auth) a zadejte přístupový klíč 🔑
     \ 3️⃣ Pokud chcete využít své vlastní zdroje OpenAI, klikněte [sem](/#/settings) a upravte nastavení ⚙️
  `,
   },
@@ -27,7 +24,7 @@ const cs: PartialLocaleType = {
     Return: "Návrat",
     SaasTips: "Konfigurace je příliš složitá, chci okamžitě začít používat",
     TopTips:
-      "🥳 Uvítací nabídka NextChat AI, okamžitě odemkněte OpenAI o1, GPT-4o, Claude-3.5 a nejnovější velké modely",
+      "🥳 Uvítací nabídka AI, okamžitě odemkněte OpenAI o1, GPT-4o, Claude-3.5 a nejnovější velké modely",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} konverzací`,

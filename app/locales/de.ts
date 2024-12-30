@@ -9,11 +9,8 @@ const de: PartialLocaleType = {
   Error: {
     Unauthorized: isApp
       ? `😆 Das Gespräch hatte einige Probleme, keine Sorge:
-    \\ 1️⃣ Wenn du ohne Konfiguration sofort starten möchtest, [klicke hier, um sofort zu chatten 🚀](${SAAS_CHAT_UTM_URL})
     \\ 2️⃣ Wenn du deine eigenen OpenAI-Ressourcen verwenden möchtest, klicke [hier](/#/settings), um die Einstellungen zu ändern ⚙️`
       : `😆 Das Gespräch hatte einige Probleme, keine Sorge:
-    \ 1️⃣ Wenn du ohne Konfiguration sofort starten möchtest, [klicke hier, um sofort zu chatten 🚀](${SAAS_CHAT_UTM_URL})
-    \ 2️⃣ Wenn du eine private Bereitstellung verwendest, klicke [hier](/#/auth), um den Zugriffsschlüssel einzugeben 🔑
     \ 3️⃣ Wenn du deine eigenen OpenAI-Ressourcen verwenden möchtest, klicke [hier](/#/settings), um die Einstellungen zu ändern ⚙️
  `,
   },
@@ -28,7 +25,7 @@ const de: PartialLocaleType = {
     SaasTips:
       "Die Konfiguration ist zu kompliziert, ich möchte es sofort nutzen",
     TopTips:
-      "🥳 NextChat AI Einführungsangebot, schalte jetzt OpenAI o1, GPT-4o, Claude-3.5 und die neuesten großen Modelle frei",
+      "🥳 AI Einführungsangebot, schalte jetzt OpenAI o1, GPT-4o, Claude-3.5 und die neuesten großen Modelle frei",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} Gespräche`,
