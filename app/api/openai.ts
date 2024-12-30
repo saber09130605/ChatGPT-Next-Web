@@ -33,12 +33,11 @@ export async function handle(
 ) {
   console.log("[OpenAI Route] params ", params);
   // 克隆请求对象
-  const clonedReq = req.clone();
-  // 手动设置必要的属性
-  clonedReq.nextUrl = req.nextUrl;
-  clonedReq.headers = req.headers;
-  clonedReq.method = req.method;
-  clonedReq.body = req.body;
+  const clonedReq = new NextRequest(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: req.body,
+  });
 
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
