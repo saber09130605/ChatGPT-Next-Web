@@ -134,8 +134,8 @@ export async function requestOpenai(req: NextRequest) {
     signal: controller.signal,
   };
 
-  console.log("[API Fetch Options]", apifetchOptions);
-  console.log("[body Options]", reqClone.body);
+  console.log("[authValue]", authValue);
+  console.log("[code]", code);
 
   // #1815 try to refuse gpt4 request
   if (serverConfig.customModels && req.body) {
