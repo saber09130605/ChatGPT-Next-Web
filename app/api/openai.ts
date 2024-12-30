@@ -53,6 +53,11 @@ export async function handle(
   }
 
   const authResult = auth(req, ModelProvider.GPT);
+  const authResultAuthorization = req.headers.get("Authorization");
+  console.log(
+    "[OpenAI Route] authResultAuthorization ",
+    authResultAuthorization,
+  );
   if (authResult.error) {
     return NextResponse.json(authResult, {
       status: 401,
