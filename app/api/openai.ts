@@ -31,7 +31,8 @@ export async function handle(
   { params }: { params: { path: string[] } },
 ) {
   console.log("[OpenAI Route] params ", params);
-
+  const Authorization = req.headers.get("Authorization");
+  console.log("[OpenAI Route] Authorization ", Authorization);
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
   }
