@@ -48,8 +48,8 @@ export async function checkText(
   })
     .then((res) => res.json())
     .then(({ data, message }: { data: boolean; message: string }) => {
-      !data && showToast(message);
-      return data;
+      data && showToast(message);
+      return !data;
     });
 
   return result;
