@@ -52,11 +52,7 @@ export async function verifyInput(req: NextRequest) {
     signal: controller.signal,
   };
   try {
-    const result = await fetch(
-      "http://localhost:56521/api/verifyinput",
-      apifetchOptions,
-    );
-    console.log("verifyinput result", result);
+    await fetch("http://localhost:56521/api/verifyinput", apifetchOptions);
   } catch (error) {
     console.error("verifyinput error", error);
   }
