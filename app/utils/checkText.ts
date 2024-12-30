@@ -25,10 +25,10 @@ const checkdomain = () => {
     return true;
   }
 };
-// const fileSearchBaseUrl = checkdomain()
-//   ? ""
-//   : `${location.protocol}//${location.hostname}`;
-const fileSearchBaseUrl = "http://localhost:8080";
+const fileSearchBaseUrl = checkdomain()
+  ? ""
+  : `${location.protocol}//${location.hostname}`;
+// const fileSearchBaseUrl = "http://localhost:8080";
 export async function checkText(
   text: string,
   zoomModel: string,
