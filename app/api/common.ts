@@ -29,6 +29,8 @@ export async function requestOpenai(req: NextRequest) {
     authHeaderName = "Authorization";
   }
 
+  console.log("[authValue]", authValue);
+
   let path = `${req.nextUrl.pathname}`.replaceAll("/api/openai/", "");
 
   let baseUrl =
@@ -134,7 +136,6 @@ export async function requestOpenai(req: NextRequest) {
     signal: controller.signal,
   };
 
-  console.log("[authValue]", authValue);
   console.log("[code]", code);
 
   // #1815 try to refuse gpt4 request
