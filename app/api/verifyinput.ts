@@ -25,6 +25,9 @@ export async function verifyInput(req: NextRequest) {
   const cacheCode = cookies.cachecode;
   const code = req.headers.get("code");
   console.log("verifyInput authValue", authValue);
+  if (authValue.startsWith("Bearer ")) {
+    authValue = authValue.replace("Bearer ", "");
+  }
   if (authValue.startsWith(ACCESS_CODE_PREFIX)) {
     authValue = authValue.replace(ACCESS_CODE_PREFIX, "");
   }
