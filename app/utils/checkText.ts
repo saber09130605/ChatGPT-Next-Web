@@ -25,11 +25,14 @@ const checkdomain = () => {
     return true;
   }
 };
-const fileSearchBaseUrl = checkdomain()
-  ? ""
-  : `${location.protocol}//${location.hostname}`;
-
-export async function checkText(text: string): Promise<boolean> {
+// const fileSearchBaseUrl = checkdomain()
+//   ? ""
+//   : `${location.protocol}//${location.hostname}`;
+const fileSearchBaseUrl = "http://localhost:8080";
+export async function checkText(
+  text: string,
+  zoomModel: string,
+): Promise<boolean> {
   const chatPath = `${fileSearchBaseUrl}/checkText`;
   const result = await fetch(chatPath, {
     method: "post",
@@ -40,16 +43,13 @@ export async function checkText(text: string): Promise<boolean> {
       text: text,
       username: userAccessMemory.getState().username,
       time: formatDateTime(new Date()),
+      zoomModel,
     }),
   })
     .then((res) => res.json())
     .then(({ data, message }: { data: boolean; message: string }) => {
-      if (!data) {
-        return true;
-      } else {
-        showToast("你输入的内容有违禁词，请修改！");
-        return false;
-      }
+      !data && showToast(message);
+      return data;
     });
 
   return result;
