@@ -28,8 +28,23 @@ export async function requestOpenai(req: NextRequest) {
     authValue = req.headers.get("Authorization") ?? "";
     authHeaderName = "Authorization";
   }
+  let authValueClone,
+    authHeaderNameClone = "";
+  if (isAzure) {
+    authValueClone =
+      reqClone.headers
+        .get("Authorization")
+        ?.trim()
+        .replaceAll("Bearer ", "")
+        .trim() ?? "";
 
-  console.log("[authValue]", authValue);
+    authHeaderNameClone = "api-key";
+  } else {
+    authValueClone = reqClone.headers.get("Authorization") ?? "";
+    authHeaderNameClone = "Authorization";
+  }
+  console.log("[authValueClone]", authValueClone);
+  console.log("[authHeaderNameClone]", authHeaderNameClone);
 
   let path = `${req.nextUrl.pathname}`.replaceAll("/api/openai/", "");
 
