@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { requestOpenai } from "./common";
 import { searchAi } from "./searchAi/searchAi";
-import { verifyInput } from "./verifyinput";
 
 const ALLOWED_PATH = new Set(Object.values(OpenaiPath));
 
@@ -32,7 +31,7 @@ export async function handle(
   { params }: { params: { path: string[] } },
 ) {
   console.log("[OpenAI Route] params ", params);
-  const verifyInputReq = req.clone();
+  // const verifyInputReq = req.clone();
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
   }
@@ -68,7 +67,7 @@ export async function handle(
     } else {
       response = await requestOpenai(searchReq.request);
     }
-    await verifyInput(verifyInputReq);
+    // await verifyInput(verifyInputReq);
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
       const resJson = (await response.json()) as OpenAIListModelResponse;
