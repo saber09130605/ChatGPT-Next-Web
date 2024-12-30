@@ -57,7 +57,9 @@ export async function handle(
       status: 401,
     });
   }
-
+  console.log({
+    req: req.clone(),
+  });
   try {
     const searchReq = await searchAi(req);
     let response: Response;
