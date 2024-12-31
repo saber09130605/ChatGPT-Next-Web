@@ -111,7 +111,7 @@ export async function searchAi(req: NextRequest) {
                     encoder.encode(`data: ${formattedChunk}\n\n`),
                   );
                   charIndex++;
-                  setTimeout(sendNextChar, 50); // 控制字符发送速度
+                  setTimeout(sendNextChar, 10); // 控制字符发送速度
                 } else {
                   push();
                 }
