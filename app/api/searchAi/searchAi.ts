@@ -85,8 +85,8 @@ export async function searchAi(req: NextRequest) {
                 controller.close();
                 return;
               }
-              console.log("value", value);
               const chunk = decoder.decode(value, { stream: true });
+              console.log("chunk", chunk);
               for (const char of chunk) {
                 const formattedChunk = JSON.stringify({
                   id: searchData.id,
