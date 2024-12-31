@@ -2,7 +2,13 @@ import { NextRequest } from "next/server";
 import { requestOpenai } from "../common";
 import { news, general } from "./handleFunction";
 import { tools } from "./searchAiConstant";
-
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS", // 允许的HTTP方法
+  "Access-Control-Allow-Headers":
+    "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization",
+  "Access-Control-Max-Age": "86400", // 预检请求结果的缓存时间
+};
 export async function searchAi(req: NextRequest) {
   const reqClone = req.clone();
   const cloneBody = await reqClone.json();
@@ -24,8 +30,8 @@ export async function searchAi(req: NextRequest) {
         body: JSON.stringify(searchBody),
       });
       const response = await requestOpenai(searchReq);
-      const searchData = await response.clone().json();
-      // console.log("searchData", searchData);
+      const responseClone = response.clone(); // 克隆响应对象
+      const searchData = await responseClone.json();
       delete cloneBody.zoomModel;
       const modifiedMessages = [
         ...cloneBody.messages,
@@ -75,7 +81,11 @@ export async function searchAi(req: NextRequest) {
       const sseResponse = new Response(response.body, {
         status: response.status,
         statusText: response.statusText,
-        headers: response.headers,
+        headers: {
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          ...corsHeaders,
+        },
       });
       return { response: sseResponse };
     } catch (error) {
