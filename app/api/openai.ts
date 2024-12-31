@@ -73,7 +73,7 @@ export async function handle(
     const searchReq = await searchAi(req);
     let response: Response;
     if (searchReq.response) {
-      return searchReq.response;
+      response = searchReq.response;
     } else {
       response = await requestOpenai(searchReq.request);
     }
@@ -81,7 +81,6 @@ export async function handle(
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
       const resJson = (await response.json()) as OpenAIListModelResponse;
-
       const availableModels = getModels(resJson);
       return NextResponse.json(availableModels, {
         status: response.status,

@@ -2,6 +2,9 @@ import { NextRequest } from "next/server";
 import { requestOpenai } from "../common";
 import { news, general } from "./handleFunction";
 import { tools } from "./searchAiConstant";
+import { getServerSideConfig } from "../../config/server";
+
+const serverConfig = getServerSideConfig();
 
 export async function searchAi(req: NextRequest) {
   const reqClone = req.clone();
@@ -71,8 +74,27 @@ export async function searchAi(req: NextRequest) {
           request: modifiedReq,
         };
       }
+      const newHeaders = new Headers(response.headers);
+      newHeaders.delete("www-authenticate");
+      // to disable nginx buffering
+      newHeaders.set("X-Accel-Buffering", "no");
+      if (!serverConfig.openaiOrgId || serverConfig.openaiOrgId.trim() === "") {
+        newHeaders.delete("OpenAI-Organization");
+      }
+
+      // The latest version of the OpenAI API forced the content-encoding to be "br" in json response
+      // So if the streaming is disabled, we need to remove the content-encoding header
+      // Because Vercel uses gzip to compress the response, if we don't remove the content-encoding header
+      // The browser will try to decode the response with brotli and fail
+      newHeaders.delete("content-encoding");
       // console.log("没有调用自定义函数", response);
-      return { response };
+      return {
+        response: new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: newHeaders,
+        }),
+      };
     } catch (error) {}
   }
   delete cloneBody.zoomModel;
