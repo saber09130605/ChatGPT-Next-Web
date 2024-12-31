@@ -87,7 +87,9 @@ export async function searchAi(req: NextRequest) {
               }
               const chunk = decoder.decode(value, { stream: true });
               console.log("chunk", chunk);
-              for (const char of chunk) {
+              const chunkData = JSON.parse(chunk);
+              const content = chunkData.choices[0].message.content;
+              for (const char of content) {
                 const formattedChunk = JSON.stringify({
                   id: searchData.id,
                   object: "chat.completion.chunk",
