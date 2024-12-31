@@ -71,7 +71,7 @@ export async function searchAi(req: NextRequest) {
           request: modifiedReq,
         };
       }
-      console.log("没有调用自定义函数", response);
+      // console.log("没有调用自定义函数", response);
       return { response };
     } catch (error) {}
   }

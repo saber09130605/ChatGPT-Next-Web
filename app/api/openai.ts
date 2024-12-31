@@ -72,6 +72,7 @@ export async function handle(
     let response: Response;
     if (searchReq.response) {
       response = searchReq.response;
+      console.log("[OpenAI] searchAi response", response);
     } else {
       response = await requestOpenai(searchReq.request);
     }
