@@ -72,6 +72,7 @@ export async function handle(
     let response: Response;
     if (searchReq.response) {
       response = searchReq.response;
+      console.log("[OpenAI] searchAi response", response);
     } else {
       response = await requestOpenai(searchReq.request);
     }
@@ -87,8 +88,6 @@ export async function handle(
         status: response.status,
       });
     }
-    const resJson = (await response.json()) as OpenAIListModelResponse;
-    console.log("[OpenAI Route] response ", resJson);
 
     return response;
   } catch (e) {
