@@ -359,12 +359,13 @@ const baiduModels = [
 ];
 
 const bytedanceModels = [
-  "Doubao-lite-4k",
-  "Doubao-lite-32k",
-  "Doubao-lite-128k",
+  // "Doubao-lite-4k",
+  // "Doubao-lite-32k",
+  // "Doubao-lite-128k",
   "Doubao-pro-4k",
   "Doubao-pro-32k",
-  "Doubao-pro-128k",
+  // "Doubao-pro-128k",
+  "doubao-pro-4k-browsing-240524",
 ];
 
 const alibabaModes = [
