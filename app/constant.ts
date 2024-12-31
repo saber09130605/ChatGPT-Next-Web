@@ -318,13 +318,15 @@ const openaiModels = [
 ];
 
 const googleModels = [
-  "gemini-1.0-pro",
-  "gemini-1.5-pro-latest",
-  "gemini-1.5-flash-latest",
-  "gemini-exp-1114",
-  "gemini-exp-1121",
-  "learnlm-1.5-pro-experimental",
-  "gemini-pro-vision",
+  // "gemini-1.0-pro",
+  "gemini-1.5-pro",
+  "gemini-1.5-flash",
+  "gemini-1.5-flash-8b",
+  // "gemini-exp-1114",
+  // "gemini-exp-1121",
+  // "learnlm-1.5-pro-experimental",
+  // "gemini-pro-vision",
+  // "gemini-2.0-flash-exp"
 ];
 
 const anthropicModels = [
@@ -390,7 +392,8 @@ const tencentModels = [
   "",
 ];
 
-const moonshotModes = ["moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k"];
+// const moonshotModes = ["moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k"];
+const moonshotModes = ["moonshot-v1-8k", "moonshot-v1-32k"];
 
 const iflytekModels = [
   "general",
@@ -438,17 +441,17 @@ export const DEFAULT_MODELS = [
   //     sorted: 2,
   //   },
   // })),
-  // ...googleModels.map((name) => ({
-  //   name,
-  //   available: true,
-  //   sorted: seq++,
-  //   provider: {
-  //     id: "google",
-  //     providerName: "Google",
-  //     providerType: "google",
-  //     sorted: 3,
-  //   },
-  // })),
+  ...googleModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "google",
+      providerName: "Google",
+      providerType: "google",
+      sorted: 4,
+    },
+  })),
   ...anthropicModels.map((name) => ({
     name,
     available: true,
@@ -457,7 +460,7 @@ export const DEFAULT_MODELS = [
       id: "anthropic",
       providerName: "Anthropic",
       providerType: "anthropic",
-      sorted: 4,
+      sorted: 3,
     },
   })),
   // ...baiduModels.map((name) => ({
@@ -504,17 +507,17 @@ export const DEFAULT_MODELS = [
   //     sorted: 8,
   //   },
   // })),
-  // ...moonshotModes.map((name) => ({
-  //   name,
-  //   available: true,
-  //   sorted: seq++,
-  //   provider: {
-  //     id: "moonshot",
-  //     providerName: "Moonshot",
-  //     providerType: "moonshot",
-  //     sorted: 9,
-  //   },
-  // })),
+  ...moonshotModes.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "moonshot",
+      providerName: "Moonshot",
+      providerType: "moonshot",
+      sorted: 9,
+    },
+  })),
   // ...iflytekModels.map((name) => ({
   //   name,
   //   available: true,
