@@ -365,7 +365,7 @@ const bytedanceModels = [
   // "Doubao-pro-4k",
   "Doubao-pro-32k",
   // "Doubao-pro-128k",
-  "doubao-pro-4k-browsing-240524",
+  "Doubao-pro-4k-browsing",
 ];
 
 const alibabaModes = [
@@ -397,11 +397,16 @@ const tencentModels = [
 const moonshotModes = ["moonshot-v1-8k", "moonshot-v1-32k"];
 
 const iflytekModels = [
+  // Spark lite
   "general",
-  "generalv3",
-  "pro-128k",
+  // Spark Pro
+  // "generalv3",
+  // Spark Pro 128k
+  // "pro-128k",
+  // Spark Max
   "generalv3.5",
-  "4.0Ultra",
+  // Spark4.0 Ultra
+  // "4.0Ultra",
 ];
 
 const xAIModes = ["grok-beta"];
@@ -481,7 +486,7 @@ export const DEFAULT_MODELS = [
     sorted: seq++,
     provider: {
       id: "bytedance",
-      providerName: "ByteDance",
+      providerName: "字节跳动ByteDance",
       providerType: "bytedance",
       sorted: 6,
     },
@@ -514,22 +519,22 @@ export const DEFAULT_MODELS = [
     sorted: seq++,
     provider: {
       id: "moonshot",
-      providerName: "Moonshot",
+      providerName: "月之暗面Moonshot",
       providerType: "moonshot",
       sorted: 9,
     },
   })),
-  // ...iflytekModels.map((name) => ({
-  //   name,
-  //   available: true,
-  //   sorted: seq++,
-  //   provider: {
-  //     id: "iflytek",
-  //     providerName: "Iflytek",
-  //     providerType: "iflytek",
-  //     sorted: 10,
-  //   },
-  // })),
+  ...iflytekModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "iflytek",
+      providerName: "讯飞星火Iflytek",
+      providerType: "iflytek",
+      sorted: 10,
+    },
+  })),
   // ...xAIModes.map((name) => ({
   //   name,
   //   available: true,

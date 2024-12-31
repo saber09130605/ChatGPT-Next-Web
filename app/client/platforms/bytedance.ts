@@ -97,7 +97,7 @@ export class DoubaoApi implements LLMApi {
       },
     };
 
-    if (modelConfig.model == "doubao-pro-4k-browsing-240524") {
+    if (modelConfig.model == "Doubao-pro-4k-browsing") {
       modelConfig.model = "ep-20241231160812-7bdqs"
     }
 
