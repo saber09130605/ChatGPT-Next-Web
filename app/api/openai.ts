@@ -82,14 +82,13 @@ export async function handle(
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
       const resJson = (await response.json()) as OpenAIListModelResponse;
-
+      console.log("[OpenAI Route] response success ", resJson);
       const availableModels = getModels(resJson);
       return NextResponse.json(availableModels, {
         status: response.status,
       });
     }
-    const resJson = (await response.json()) as OpenAIListModelResponse;
-    console.log("[OpenAI Route] response success ", resJson);
+
     return response;
   } catch (e) {
     console.error("[OpenAI] ", e);
