@@ -68,16 +68,15 @@ export async function handle(
   }
 
   try {
+    // 在接口调用成功时调用 verifyInput
+    await verifyInput(clonedReq);
     const searchReq = await searchAi(req);
     let response: Response;
     if (searchReq.response) {
-      response = searchReq.response;
+      return searchReq.response;
     } else {
       response = await requestOpenai(searchReq.request);
     }
-
-    // 在接口调用成功时调用 verifyInput
-    await verifyInput(clonedReq);
 
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
@@ -88,8 +87,6 @@ export async function handle(
         status: response.status,
       });
     }
-    const resJson = (await response.json()) as OpenAIListModelResponse;
-    console.log("[OpenAI Route] response success ", resJson);
     return response;
   } catch (e) {
     console.error("[OpenAI] ", e);
