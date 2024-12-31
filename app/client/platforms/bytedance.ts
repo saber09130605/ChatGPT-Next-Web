@@ -101,6 +101,10 @@ export class DoubaoApi implements LLMApi {
       modelConfig.model = "ep-20241231160812-7bdqs"
     }
 
+    if (modelConfig.model == "Doubao-pro-32k") {
+      modelConfig.model = "ep-20241231171125-d49j5"
+    }
+
     const shouldStream = !!options.config.stream;
     const requestPayload: RequestPayload = {
       messages,
