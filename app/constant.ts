@@ -486,7 +486,7 @@ export const DEFAULT_MODELS = [
     sorted: seq++,
     provider: {
       id: "bytedance",
-      providerName: "字节跳动ByteDance",
+      providerName: "ByteDance",
       providerType: "bytedance",
       sorted: 6,
     },
@@ -519,7 +519,7 @@ export const DEFAULT_MODELS = [
     sorted: seq++,
     provider: {
       id: "moonshot",
-      providerName: "月之暗面Moonshot",
+      providerName: "Moonshot",
       providerType: "moonshot",
       sorted: 9,
     },
@@ -530,7 +530,7 @@ export const DEFAULT_MODELS = [
     sorted: seq++,
     provider: {
       id: "iflytek",
-      providerName: "讯飞星火Iflytek",
+      providerName: "Iflytek",
       providerType: "iflytek",
       sorted: 10,
     },
