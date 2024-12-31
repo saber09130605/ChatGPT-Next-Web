@@ -71,8 +71,19 @@ export async function searchAi(req: NextRequest) {
           request: modifiedReq,
         };
       }
-      return { response };
-    } catch (error) {}
+      // 如果没有函数调用，返回流式响应
+      const sseResponse = new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+      });
+      return { response: sseResponse };
+    } catch (error) {
+      console.error("Error in searchAi:", error);
+      return {
+        response: new Response("Internal Server Error", { status: 500 }),
+      };
+    }
   }
   delete cloneBody.zoomModel;
   const modifiedReq = new NextRequest(req.url, {
