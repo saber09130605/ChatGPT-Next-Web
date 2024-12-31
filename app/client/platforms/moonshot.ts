@@ -25,7 +25,14 @@ import { getClientConfig } from "@/app/config/client";
 import { getMessageTextContent } from "@/app/utils";
 import { RequestPayload } from "./openai";
 import { fetch } from "@/app/utils/stream";
-
+const baseTools = [
+  {
+    type: "builtin_function",
+    function: {
+      name: "$web_search",
+    },
+  },
+];
 export class MoonshotApi implements LLMApi {
   private disableListModels = true;
 
@@ -92,8 +99,6 @@ export class MoonshotApi implements LLMApi {
       // Please do not ask me why not send max_tokens, no reason, this param is just shit, I dont want to explain anymore.
     };
 
-    console.log("[Request] openai payload: ", requestPayload);
-
     const shouldStream = !!options.config.stream;
     const controller = new AbortController();
     options.onController?.(controller);
@@ -102,7 +107,7 @@ export class MoonshotApi implements LLMApi {
       const chatPath = this.path(Moonshot.ChatPath);
       const chatPayload = {
         method: "POST",
-        body: JSON.stringify(requestPayload),
+        body: JSON.stringify({ ...requestPayload, tools: baseTools }),
         signal: controller.signal,
         headers: getHeaders(),
       };
@@ -112,18 +117,21 @@ export class MoonshotApi implements LLMApi {
         () => controller.abort(),
         REQUEST_TIMEOUT_MS,
       );
-
+      console.log("shouldStream is", shouldStream);
+      console.log("options.config.stream is", options.config.stream);
       if (shouldStream) {
         const [tools, funcs] = usePluginStore
           .getState()
           .getAsTools(
             useChatStore.getState().currentSession().mask?.plugin || [],
           );
+        console.log("tools is", tools);
+        const ptools = [...tools, ...baseTools];
         return stream(
           chatPath,
           requestPayload,
           getHeaders(),
-          tools as any,
+          ptools as any,
           funcs,
           controller,
           // parseSSE
@@ -175,6 +183,7 @@ export class MoonshotApi implements LLMApi {
           options,
         );
       } else {
+        console.log("chatPayload is ", chatPayload);
         const res = await fetch(chatPath, chatPayload);
         clearTimeout(requestTimeoutId);
 
