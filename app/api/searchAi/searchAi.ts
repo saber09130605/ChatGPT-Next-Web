@@ -24,8 +24,8 @@ export async function searchAi(req: NextRequest) {
         body: JSON.stringify(searchBody),
       });
       const response = await requestOpenai(searchReq);
-      const searchData = await response.json();
-      console.log("searchData", searchData);
+      const searchData = await response.clone().json();
+      // console.log("searchData", searchData);
       delete cloneBody.zoomModel;
       const modifiedMessages = [
         ...cloneBody.messages,
