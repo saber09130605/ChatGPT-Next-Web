@@ -73,13 +73,49 @@ export async function searchAi(req: NextRequest) {
         };
       }
       // 如果没有函数调用，返回流式响应
+      const stream = new ReadableStream({
+        start(controller) {
+          const encoder = new TextEncoder();
+          const decoder = new TextDecoder();
+          const reader = response.body?.getReader();
+
+          function push() {
+            reader?.read().then(({ done, value }) => {
+              if (done) {
+                controller.close();
+                return;
+              }
+              const chunk = decoder.decode(value, { stream: true });
+              const formattedChunk = JSON.stringify({
+                id: searchData.id,
+                object: "chat.completion.chunk",
+                created: searchData.created,
+                model: searchData.model,
+                system_fingerprint: searchData.system_fingerprint,
+                choices: [
+                  {
+                    index: 0,
+                    delta: { content: chunk },
+                    finish_reason: null,
+                  },
+                ],
+              });
+              controller.enqueue(encoder.encode(`data: ${formattedChunk}\n\n`));
+              push();
+            });
+          }
+
+          push();
+        },
+      });
+
       const newHeaders = new Headers(response.headers);
       newHeaders.delete("www-authenticate");
       newHeaders.set("X-Accel-Buffering", "no");
       newHeaders.delete("content-encoding");
       newHeaders.set("content-type", "text/event-stream");
 
-      const sseResponse = new Response(response.body, {
+      const sseResponse = new Response(stream, {
         status: response.status,
         statusText: response.statusText,
         headers: newHeaders,
