@@ -24,8 +24,9 @@ export async function searchAi(req: NextRequest) {
         body: JSON.stringify(searchBody),
       });
       const response = await requestOpenai(searchReq);
-      const searchData = await response.json();
-      // console.log("searchData", searchData);
+
+      const responseClone = response.clone(); // 克隆响应对象
+      const searchData = await responseClone.json();
       delete cloneBody.zoomModel;
       const modifiedMessages = [
         ...cloneBody.messages,
@@ -71,8 +72,77 @@ export async function searchAi(req: NextRequest) {
           request: modifiedReq,
         };
       }
-      return { response };
-    } catch (error) {}
+      // 如果没有函数调用，返回逐字流式响应
+      const stream = new ReadableStream({
+        start(controller) {
+          const encoder = new TextEncoder();
+          const decoder = new TextDecoder();
+          const reader = response.body?.getReader();
+
+          function push() {
+            reader?.read().then(({ done, value }) => {
+              if (done) {
+                controller.close();
+                return;
+              }
+              const chunk = decoder.decode(value, { stream: true });
+              console.log("chunk", chunk);
+              const content = searchData.choices[0].message.content;
+              let charIndex = 0;
+
+              function sendNextChar() {
+                if (charIndex < content.length) {
+                  const char = content[charIndex];
+                  const formattedChunk = JSON.stringify({
+                    id: searchData.id,
+                    object: "chat.completion.chunk",
+                    created: searchData.created,
+                    model: searchData.model,
+                    system_fingerprint: searchData.system_fingerprint,
+                    choices: [
+                      {
+                        index: 0,
+                        delta: { content: char },
+                        finish_reason: null,
+                      },
+                    ],
+                  });
+                  controller.enqueue(
+                    encoder.encode(`data: ${formattedChunk}\n\n`),
+                  );
+                  charIndex++;
+                  setTimeout(sendNextChar, 10); // 控制字符发送速度
+                } else {
+                  push();
+                }
+              }
+
+              sendNextChar();
+            });
+          }
+
+          push();
+        },
+      });
+
+      const newHeaders = new Headers(response.headers);
+      newHeaders.delete("www-authenticate");
+      newHeaders.set("X-Accel-Buffering", "no");
+      newHeaders.delete("content-encoding");
+      newHeaders.set("content-type", "text/event-stream");
+
+      const sseResponse = new Response(stream, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: newHeaders,
+      });
+      return { response: sseResponse };
+    } catch (error) {
+      console.error("Error in searchAi:", error);
+      return {
+        response: new Response("Internal Server Error", { status: 500 }),
+      };
+    }
   }
   delete cloneBody.zoomModel;
   const modifiedReq = new NextRequest(req.url, {

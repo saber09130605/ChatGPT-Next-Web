@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { requestOpenai } from "./common";
 import { searchAi } from "./searchAi/searchAi";
+import { verifyInput } from "./verifyinput";
 
 const ALLOWED_PATH = new Set(Object.values(OpenaiPath));
 
@@ -31,6 +32,13 @@ export async function handle(
   { params }: { params: { path: string[] } },
 ) {
   console.log("[OpenAI Route] params ", params);
+  // 克隆请求对象
+  const clonedReqBody = req.clone();
+  const clonedReq = new NextRequest(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: clonedReqBody.body,
+  });
 
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
@@ -52,14 +60,13 @@ export async function handle(
   }
 
   const authResult = auth(req, ModelProvider.GPT);
+
   if (authResult.error) {
     return NextResponse.json(authResult, {
       status: 401,
     });
   }
-  console.log({
-    req: req.clone(),
-  });
+
   try {
     const searchReq = await searchAi(req);
     let response: Response;
@@ -68,6 +75,10 @@ export async function handle(
     } else {
       response = await requestOpenai(searchReq.request);
     }
+
+    // 在接口调用成功时调用 verifyInput
+    await verifyInput(clonedReq);
+
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
       const resJson = (await response.json()) as OpenAIListModelResponse;
