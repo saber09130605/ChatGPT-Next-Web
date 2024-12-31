@@ -1,14 +1,19 @@
-import { NextRequest } from "next/server";
+// app/api/searchAi/searchAi.ts
+
+import { NextRequest, NextResponse } from "next/server";
 import { requestOpenai } from "../common";
 import { news, general } from "./handleFunction";
 import { tools } from "./searchAiConstant";
 
-export async function searchAi(req: NextRequest) {
+export async function searchAi(
+  req: NextRequest,
+): Promise<{ request: NextRequest } | NextResponse> {
   const reqClone = req.clone();
   const cloneBody = await reqClone.json();
   const zoomModel = cloneBody?.zoomModel;
   const lastMessages = cloneBody?.messages.slice(-1)[0];
-  if (zoomModel && zoomModel != "none" && lastMessages.role == "user") {
+
+  if (zoomModel && zoomModel !== "none" && lastMessages.role === "user") {
     try {
       const searchBody = {
         model: cloneBody.model,
@@ -33,6 +38,7 @@ export async function searchAi(req: NextRequest) {
         searchData.choices[0].message,
       ];
       let calledCustomFunction = false;
+
       if (searchData.choices[0].message.tool_calls) {
         const toolCalls = searchData.choices[0].message.tool_calls;
         const availableFunctions = {
@@ -61,6 +67,7 @@ export async function searchAi(req: NextRequest) {
       } else {
         console.log("没有发现函数调用");
       }
+
       if (calledCustomFunction) {
         cloneBody.messages = modifiedMessages;
         const modifiedReq = new NextRequest(req.url, {
@@ -68,10 +75,9 @@ export async function searchAi(req: NextRequest) {
           headers: req.headers,
           body: JSON.stringify(cloneBody),
         });
-        return {
-          request: modifiedReq,
-        };
+        return { request: modifiedReq };
       }
+
       // 如果没有函数调用，返回流式响应
       const newHeaders = new Headers(response.headers);
       newHeaders.delete("www-authenticate");
@@ -79,26 +85,25 @@ export async function searchAi(req: NextRequest) {
       newHeaders.delete("content-encoding");
       newHeaders.set("content-type", "text/event-stream");
 
-      const sseResponse = new Response(response.body, {
+      // 使用 NextResponse 来确保兼容性
+      const sseResponse = new NextResponse(response.body, {
         status: response.status,
         statusText: response.statusText,
         headers: newHeaders,
       });
-      return { response: sseResponse };
+
+      return sseResponse;
     } catch (error) {
       console.error("Error in searchAi:", error);
-      return {
-        response: new Response("Internal Server Error", { status: 500 }),
-      };
+      return new NextResponse("Internal Server Error", { status: 500 });
     }
   }
+
   delete cloneBody.zoomModel;
   const modifiedReq = new NextRequest(req.url, {
     method: req.method,
     headers: req.headers,
     body: JSON.stringify(cloneBody),
   });
-  return {
-    request: modifiedReq,
-  };
+  return { request: modifiedReq };
 }
