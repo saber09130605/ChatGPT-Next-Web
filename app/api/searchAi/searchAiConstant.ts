@@ -3,11 +3,11 @@ export const tools = [
     type: "function",
     function: {
       name: "general",
-      description: "search for factors",
+      description: "搜索因素",
       parameters: {
         type: "object",
         properties: {
-          query: { type: "string", description: "The query to search." },
+          query: { type: "string", description: "要搜索的查询。" },
         },
         required: ["query"],
       },
@@ -17,13 +17,13 @@ export const tools = [
     type: "function",
     function: {
       name: "news",
-      description: "Search for news",
+      description: "搜索新闻",
       parameters: {
         type: "object",
         properties: {
           query: {
             type: "string",
-            description: "The query to search for news.",
+            description: "搜索新闻的查询。",
           },
         },
         required: ["query"],
