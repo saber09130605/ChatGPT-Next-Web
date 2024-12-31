@@ -7,14 +7,14 @@ import { tools } from "./searchAiConstant";
 
 export async function searchAi(
   req: NextRequest,
-): Promise<{ request: NextRequest } | NextResponse> {
-  const reqClone = req.clone();
-  const cloneBody = await reqClone.json();
-  const zoomModel = cloneBody?.zoomModel;
-  const lastMessages = cloneBody?.messages.slice(-1)[0];
+): Promise<{ request: NextRequest } | { response: NextResponse }> {
+  try {
+    const reqClone = req.clone();
+    const cloneBody = await reqClone.json();
+    const zoomModel = cloneBody?.zoomModel;
+    const lastMessages = cloneBody?.messages.slice(-1)[0];
 
-  if (zoomModel && zoomModel !== "none" && lastMessages.role === "user") {
-    try {
+    if (zoomModel && zoomModel !== "none" && lastMessages.role === "user") {
       const searchBody = {
         model: cloneBody.model,
         messages: [lastMessages],
@@ -22,6 +22,7 @@ export async function searchAi(
         tools: tools,
         tool_choice: "auto",
       };
+
       // 创建新的请求对象
       const searchReq = new NextRequest(req.url, {
         method: req.method,
@@ -50,12 +51,17 @@ export async function searchAi(
           const functionToCall =
             availableFunctions[functionName as keyof typeof availableFunctions];
           const functionArgs = JSON.parse(toolCall.function.arguments);
-          let functionResponse;
+          let functionResponse: string;
+
           if (functionName === "general") {
             functionResponse = await functionToCall(functionArgs.query);
           } else if (functionName === "news") {
             functionResponse = await functionToCall(functionArgs.query);
+          } else {
+            console.warn(`未知的函数名称: ${functionName}`);
+            continue; // 跳过未知的函数调用
           }
+
           modifiedMessages.push({
             tool_call_id: toolCall.id,
             role: "tool",
@@ -85,25 +91,28 @@ export async function searchAi(
       newHeaders.delete("content-encoding");
       newHeaders.set("content-type", "text/event-stream");
 
-      // 使用 NextResponse 来确保兼容性
+      // 使用 NextResponse 来确保兼容性，并包裹在 { response: ... } 对象中
       const sseResponse = new NextResponse(response.body, {
         status: response.status,
         statusText: response.statusText,
         headers: newHeaders,
       });
 
-      return sseResponse;
-    } catch (error) {
-      console.error("Error in searchAi:", error);
-      return new NextResponse("Internal Server Error", { status: 500 });
+      return { response: sseResponse };
     }
-  }
 
-  delete cloneBody.zoomModel;
-  const modifiedReq = new NextRequest(req.url, {
-    method: req.method,
-    headers: req.headers,
-    body: JSON.stringify(cloneBody),
-  });
-  return { request: modifiedReq };
+    // 如果不需要处理 zoomModel，移除相关字段并返回修改后的请求
+    delete cloneBody.zoomModel;
+    const modifiedReq = new NextRequest(req.url, {
+      method: req.method,
+      headers: req.headers,
+      body: JSON.stringify(cloneBody),
+    });
+    return { request: modifiedReq };
+  } catch (error) {
+    console.error("Error in searchAi:", error);
+    return {
+      response: new NextResponse("Internal Server Error", { status: 500 }),
+    };
+  }
 }
