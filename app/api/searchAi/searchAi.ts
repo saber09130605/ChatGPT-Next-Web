@@ -30,6 +30,7 @@ export async function searchAi(req: NextRequest) {
         body: JSON.stringify(searchBody),
       });
       const response = await requestOpenai(searchReq);
+
       const responseClone = response.clone(); // 克隆响应对象
       const searchData = await responseClone.json();
       delete cloneBody.zoomModel;
@@ -78,14 +79,15 @@ export async function searchAi(req: NextRequest) {
         };
       }
       // 如果没有函数调用，返回流式响应
+      const newHeaders = new Headers(response.headers);
+      newHeaders.delete("www-authenticate");
+      newHeaders.set("X-Accel-Buffering", "no");
+      newHeaders.delete("content-encoding");
+
       const sseResponse = new Response(response.body, {
         status: response.status,
         statusText: response.statusText,
-        headers: {
-          "Content-Type": "text/event-stream",
-          "Cache-Control": "no-cache",
-          ...corsHeaders,
-        },
+        headers: newHeaders,
       });
       return { response: sseResponse };
     } catch (error) {
