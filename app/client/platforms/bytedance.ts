@@ -97,6 +97,10 @@ export class DoubaoApi implements LLMApi {
       },
     };
 
+    if (modelConfig.model == "doubao-pro-4k-browsing-240524") {
+      modelConfig.model = "ep-20241231160812-7bdqs"
+    }
+
     const shouldStream = !!options.config.stream;
     const requestPayload: RequestPayload = {
       messages,
