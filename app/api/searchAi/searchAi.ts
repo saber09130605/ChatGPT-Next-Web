@@ -87,28 +87,37 @@ export async function searchAi(req: NextRequest) {
               }
               const chunk = decoder.decode(value, { stream: true });
               console.log("chunk", chunk);
-              const chunkData = JSON.parse(chunk);
-              const content = chunkData.choices[0].message.content;
-              for (const char of content) {
-                const formattedChunk = JSON.stringify({
-                  id: searchData.id,
-                  object: "chat.completion.chunk",
-                  created: searchData.created,
-                  model: searchData.model,
-                  system_fingerprint: searchData.system_fingerprint,
-                  choices: [
-                    {
-                      index: 0,
-                      delta: { content: char },
-                      finish_reason: null,
-                    },
-                  ],
-                });
-                controller.enqueue(
-                  encoder.encode(`data: ${formattedChunk}\n\n`),
-                );
+              const content = searchData.choices[0].message.content;
+              let charIndex = 0;
+
+              function sendNextChar() {
+                if (charIndex < content.length) {
+                  const char = content[charIndex];
+                  const formattedChunk = JSON.stringify({
+                    id: searchData.id,
+                    object: "chat.completion.chunk",
+                    created: searchData.created,
+                    model: searchData.model,
+                    system_fingerprint: searchData.system_fingerprint,
+                    choices: [
+                      {
+                        index: 0,
+                        delta: { content: char },
+                        finish_reason: null,
+                      },
+                    ],
+                  });
+                  controller.enqueue(
+                    encoder.encode(`data: ${formattedChunk}\n\n`),
+                  );
+                  charIndex++;
+                  setTimeout(sendNextChar, 50); // 控制字符发送速度
+                } else {
+                  push();
+                }
               }
-              push();
+
+              sendNextChar();
             });
           }
 
@@ -120,7 +129,7 @@ export async function searchAi(req: NextRequest) {
       newHeaders.delete("www-authenticate");
       newHeaders.set("X-Accel-Buffering", "no");
       newHeaders.delete("content-encoding");
-      newHeaders.set("content-type", "text/event-stream; charset=utf-8");
+      newHeaders.set("content-type", "text/event-stream");
 
       const sseResponse = new Response(stream, {
         status: response.status,
