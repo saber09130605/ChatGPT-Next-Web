@@ -475,17 +475,17 @@ export const DEFAULT_MODELS = [
   //     sorted: 5,
   //   },
   // })),
-  // ...bytedanceModels.map((name) => ({
-  //   name,
-  //   available: true,
-  //   sorted: seq++,
-  //   provider: {
-  //     id: "bytedance",
-  //     providerName: "ByteDance",
-  //     providerType: "bytedance",
-  //     sorted: 6,
-  //   },
-  // })),
+  ...bytedanceModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "bytedance",
+      providerName: "ByteDance",
+      providerType: "bytedance",
+      sorted: 6,
+    },
+  })),
   ...alibabaModes.map((name) => ({
     name,
     available: true,
