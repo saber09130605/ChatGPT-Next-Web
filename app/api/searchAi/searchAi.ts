@@ -1,76 +1,26 @@
 import { NextRequest } from "next/server";
-import { requestOpenai } from "../common";
-import { news, general } from "./handleFunction";
-import { tools } from "./searchAiConstant";
+
+import { searchOpenAi } from "./handleFunction";
+
+import { SHOW_ZOOM_MODELS } from "@/app/constant";
 
 export async function searchAi(req: NextRequest) {
   const reqClone = req.clone();
   const cloneBody = await reqClone.json();
+  const model = cloneBody?.model;
+
   const zoomModel = cloneBody?.zoomModel;
   const lastMessages = cloneBody?.messages.slice(-1)[0];
-  if (zoomModel && zoomModel != "none" && lastMessages.role == "user") {
+  if (
+    zoomModel &&
+    zoomModel != "none" &&
+    lastMessages.role == "user" &&
+    SHOW_ZOOM_MODELS.includes(model)
+  ) {
     try {
-      const searchBody = {
-        model: cloneBody.model,
-        messages: [lastMessages],
-        max_tokens: 3000,
-        tools: tools,
-        tool_choice: "auto",
-      };
-      // 创建新的请求对象
-      const searchReq = new NextRequest(req.url, {
-        method: req.method,
-        headers: req.headers,
-        body: JSON.stringify(searchBody),
-      });
-      const response = await requestOpenai(searchReq);
-
-      const responseClone = response.clone(); // 克隆响应对象
-      const searchData = await responseClone.json();
-      delete cloneBody.zoomModel;
-      const modifiedMessages = [
-        ...cloneBody.messages,
-        searchData.choices[0].message,
-      ];
-      let calledCustomFunction = false;
-      if (searchData.choices[0].message.tool_calls) {
-        const toolCalls = searchData.choices[0].message.tool_calls;
-        const availableFunctions = {
-          general: general,
-          news: news,
-        };
-        for (const toolCall of toolCalls) {
-          const functionName = toolCall.function.name;
-          const functionToCall =
-            availableFunctions[functionName as keyof typeof availableFunctions];
-          const functionArgs = JSON.parse(toolCall.function.arguments);
-          let functionResponse;
-          if (functionName === "general") {
-            functionResponse = await functionToCall(functionArgs.query);
-          } else if (functionName === "news") {
-            functionResponse = await functionToCall(functionArgs.query);
-          }
-          modifiedMessages.push({
-            tool_call_id: toolCall.id,
-            role: "tool",
-            name: functionName,
-            content: functionResponse,
-          });
-          calledCustomFunction = true;
-        }
-      } else {
-        console.log("没有发现函数调用");
-      }
-      if (calledCustomFunction) {
-        cloneBody.messages = modifiedMessages;
-        const modifiedReq = new NextRequest(req.url, {
-          method: req.method,
-          headers: req.headers,
-          body: JSON.stringify(cloneBody),
-        });
-        return {
-          request: modifiedReq,
-        };
+      const request: NextRequest | undefined = await searchOpenAi(req);
+      if (request) {
+        return { request };
       }
       // 如果没有函数调用，返回逐字流式响应
       const stream = new ReadableStream({
