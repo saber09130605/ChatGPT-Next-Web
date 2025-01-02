@@ -73,14 +73,18 @@ async function request(req: NextRequest) {
     headers: req.headers,
     body: clonedReqBody.body,
   });
-
+  const reqBody = await clonedReqBody.json();
+  let authorization = ""
+  if (clonedReqBody.model == "general") {
+    authorization = "Bearer gIEJTwtkfwALelGRiTLZ:tpANsKcBlFqaMzDDiqFu"
+  }
   console.log(req.headers.get("Authorization"))
 
   const fetchUrl = `${baseUrl}${path}`;
   const fetchOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: req.headers.get("Authorization") ?? "",
+      Authorization: authorization ?? req.headers.get("Authorization") ?? "",
     },
     method: req.method,
     body: req.body,

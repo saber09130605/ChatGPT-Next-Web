@@ -112,9 +112,9 @@ async function request(req: NextRequest, apiKey: string) {
   // Construct the OpenAI payload
   const openaiPayload = {
     model: modelName, // Use extracted model name
-    messages: reqBody.contents.map((content: { role: any; parts: { text: any; }[]; }) => ({
+    messages: reqBody.contents.map((content: { role: string; parts: { text: string; }[]; }) => ({
       role: content.role || "user",
-      content: content.parts[0].text // Convert parts to content
+      content: content.parts[0].text || "", // Convert parts to content
     })), // Use the existing contents array
     max_tokens: reqBody.generationConfig?.maxOutputTokens || 4000,  // Use the provided value or default
     temperature: reqBody.generationConfig?.temperature || 0.5,
