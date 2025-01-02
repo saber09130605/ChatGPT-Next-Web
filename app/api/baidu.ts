@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
 import { isModelAvailableInServer } from "@/app/utils/model";
 import { getAccessToken } from "@/app/utils/baidu";
+import { verifyInput } from "./verifyinput";
 
 const serverConfig = getServerSideConfig();
 
@@ -76,6 +77,14 @@ async function request(req: NextRequest) {
     10 * 60 * 1000,
   );
 
+  // 克隆请求对象
+  const clonedReqBody = req.clone();
+  const clonedReq = new NextRequest(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: clonedReqBody.body,
+  });
+
   const { access_token } = await getAccessToken(
     serverConfig.baiduApiKey as string,
     serverConfig.baiduSecretKey as string,
@@ -126,6 +135,8 @@ async function request(req: NextRequest) {
   }
   try {
     const res = await fetch(fetchUrl, fetchOptions);
+
+    await verifyInput(clonedReq);
 
     // to prevent browser prompt for credentials
     const newHeaders = new Headers(res.headers);
