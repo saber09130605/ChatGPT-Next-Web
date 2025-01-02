@@ -75,7 +75,7 @@ async function request(req: NextRequest) {
   });
   const reqBody = await clonedReqBody.json();
   let authorization = ""
-  if (clonedReqBody.model == "general") {
+  if (reqBody.model == "general") {
     authorization = "Bearer gIEJTwtkfwALelGRiTLZ:tpANsKcBlFqaMzDDiqFu"
   }
   console.log(req.headers.get("Authorization"))
