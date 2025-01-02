@@ -54,6 +54,7 @@ export async function general(query: any) {
 export async function searchOpenAi(req: NextRequest) {
   const reqClone = req.clone();
   const cloneBody = await reqClone.json();
+  const lastMessages = cloneBody?.messages.slice(-1)[0];
   try {
     const searchBody = {
       model: cloneBody.model,
