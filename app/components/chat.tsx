@@ -101,6 +101,7 @@ import {
   UNFINISHED_INPUT,
   ServiceProvider,
   DEFAULT_ZOOM_MODELS,
+  SHOW_ZOOM_MODELS,
 } from "../constant";
 import { Avatar } from "./emoji";
 import { ContextPrompts, MaskAvatar, MaskConfig } from "./mask";
@@ -683,8 +684,9 @@ export function ChatActions(props: {
             }}
           />
         )}
-        {chatStore.currentSession().mask.modelConfig.model ==
-          "gpt-4o-2024-11-20" && (
+        {SHOW_ZOOM_MODELS.includes(
+          chatStore.currentSession().mask.modelConfig.model,
+        ) && (
           <ChatAction
             onClick={() => {
               chatStore.updateTargetSession(session, (session) => {

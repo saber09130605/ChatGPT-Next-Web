@@ -596,3 +596,8 @@ export const DEFAULT_ZOOM_MODELS = [
     value: "news",
   },
 ];
+export const SHOW_ZOOM_MODELS = [
+  "gpt-4o-2024-11-20",
+  "moonshot-v1-8k",
+  "moonshot-v1-32k",
+];
