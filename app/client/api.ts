@@ -252,7 +252,7 @@ export function getHeaders(ignoreHeaders: boolean = false) {
     const isXAI = modelConfig.providerName === ServiceProvider.XAI;
     const isChatGLM = modelConfig.providerName === ServiceProvider.ChatGLM;
     const isEnabledAccessControl = accessStore.enabledAccessControl();
-    const modelName = modelConfig.name
+    const modelName = modelConfig.model
     const apiKey = isGoogle
       ? accessStore.googleApiKey
       : isAzure
