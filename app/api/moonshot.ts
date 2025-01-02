@@ -150,6 +150,7 @@ async function request(req: NextRequest) {
       const response = await fetch(fetchUrl, searchOptions);
       const responseClone = response.clone(); // 克隆响应对象
       const searchData = await responseClone.json();
+      console.log("searchData", searchData);
       const choice = searchData.choices[0];
       const finishReason = choice.finish_reason;
       let calledCustomFunction = false;
