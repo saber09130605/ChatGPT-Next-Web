@@ -68,25 +68,25 @@ async function request(req: NextRequest) {
 
   // 克隆请求对象
   const clonedReqBody = req.clone();
-  const reqBody = await clonedReqBody.json();
+  // const reqBody = await clonedReqBody.json();
   const clonedReq = new NextRequest(req.url, {
     method: req.method,
     headers: req.headers,
     body: clonedReqBody.body,
   });
   // const reqBody = await clonedReqBody.json();
-  let authorization = ""
-  if (reqBody.model == "general") {
-    authorization = "Bearer gIEJTwtkfwALelGRiTLZ:tpANsKcBlFqaMzDDiqFu"
-  }
+  // let authorization = ""
+  // if (reqBody.model == "general") {
+  //   authorization = "Bearer gIEJTwtkfwALelGRiTLZ:tpANsKcBlFqaMzDDiqFu"
+  // }
   console.log(req.headers.get("Authorization"))
 
   const fetchUrl = `${baseUrl}${path}`;
   const fetchOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: authorization ?? "",
-      // Authorization: authorization ?? req.headers.get("Authorization") ?? "",
+      // Authorization: authorization ?? "",
+      Authorization: req.headers.get("Authorization") ?? "",
     },
     method: req.method,
     body: req.body,

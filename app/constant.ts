@@ -398,7 +398,7 @@ const moonshotModes = ["moonshot-v1-8k", "moonshot-v1-32k"];
 
 const iflytekModels = [
   // Spark lite
-  "general",
+  // "general",
   // Spark Pro
   // "generalv3",
   // Spark Pro 128k
