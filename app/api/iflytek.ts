@@ -68,12 +68,13 @@ async function request(req: NextRequest) {
 
   // 克隆请求对象
   const clonedReqBody = req.clone();
+  const reqBody = await clonedReqBody.json();
   const clonedReq = new NextRequest(req.url, {
     method: req.method,
     headers: req.headers,
     body: clonedReqBody.body,
   });
-  const reqBody = await clonedReqBody.json();
+  // const reqBody = await clonedReqBody.json();
   let authorization = ""
   if (reqBody.model == "general") {
     authorization = "Bearer gIEJTwtkfwALelGRiTLZ:tpANsKcBlFqaMzDDiqFu"
