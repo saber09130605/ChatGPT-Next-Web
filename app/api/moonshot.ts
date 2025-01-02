@@ -176,6 +176,7 @@ async function request(req: NextRequest) {
       }
       if (calledCustomFunction) {
         cloneBody.messages = baseMessages;
+        console.log("baseMessages", baseMessages);
         fetchOptions.body = JSON.stringify(cloneBody);
         const res = await fetch(fetchUrl, fetchOptions);
         // to prevent browser prompt for credentials
