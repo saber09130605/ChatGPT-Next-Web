@@ -100,7 +100,7 @@ export class SparkApi implements LLMApi {
 
     try {
       const chatPath = this.path(Iflytek.ChatPath);
-      console.log("[Request] Spark headers:", getHeaders())
+      // console.log("[Request] Spark headers:", getHeaders())
       const chatPayload = {
         method: "POST",
         body: JSON.stringify(requestPayload),

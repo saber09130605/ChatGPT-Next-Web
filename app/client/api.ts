@@ -279,7 +279,7 @@ export function getHeaders(ignoreHeaders: boolean = false) {
         ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
         : ""
       : accessStore.openaiApiKey;
-    console.log("apiKey:   ", apiKey)
+    // console.log("apiKey:   ", apiKey)
     return {
       isGoogle,
       isAzure,
