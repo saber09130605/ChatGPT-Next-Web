@@ -65,6 +65,8 @@ async function request(req: NextRequest) {
     10 * 60 * 1000,
   );
 
+  console.log(req.headers.get("Authorization"))
+
   const fetchUrl = `${baseUrl}${path}`;
   const fetchOptions: RequestInit = {
     headers: {

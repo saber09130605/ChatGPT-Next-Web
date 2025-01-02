@@ -270,14 +270,14 @@ export function getHeaders(ignoreHeaders: boolean = false) {
       : isChatGLM
       ? accessStore.chatglmApiKey
       : isIflytek
-      ? (modelName === 'general'
-        ? 'YhULRGaTdHTitWuwIDyS:YogjkWxoHAxiIepQwbSA'  //  Specific key for 'general' model
-        : accessStore.iflytekApiKey && accessStore.iflytekApiSecret
-        ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
-        : "")
-      // ? accessStore.iflytekApiKey && accessStore.iflytekApiSecret
+      // ? (modelName === 'general'
+      //   ? 'YhULRGaTdHTitWuwIDyS:YogjkWxoHAxiIepQwbSA'  //  Specific key for 'general' model
+      //   : accessStore.iflytekApiKey && accessStore.iflytekApiSecret
       //   ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
-      //   : ""
+      //   : "")
+      ? accessStore.iflytekApiKey && accessStore.iflytekApiSecret
+        ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
+        : ""
       : accessStore.openaiApiKey;
     console.log("apiKey:   ", apiKey)
     return {
