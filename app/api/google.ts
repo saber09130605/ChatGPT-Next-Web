@@ -96,12 +96,37 @@ async function request(req: NextRequest, apiKey: string) {
 
   // 克隆请求对象
   const clonedReqBody = req.clone();
+  
+  // Extract the model name from the URL
+  const url = new URL(clonedReqBody.url);
+  const modelName = url.pathname.split('/').pop()?.split(':')[0]; // Extract model name
+
+  // Check if the model name is valid.  Crucial!
+  if (!modelName) {
+      return new NextResponse("Invalid model name in URL", { status: 400 });
+  }
+
+  // Parse the request body (assuming it's JSON)
+  const reqBody = await clonedReqBody.json();
+  
+  // Construct the OpenAI payload
+  const openaiPayload = {
+    model: modelName, // Use extracted model name
+    messages: reqBody.contents, // Use the existing contents array
+    max_tokens: reqBody.generationConfig?.maxOutputTokens || 4000,  // Use the provided value or default
+    temperature: reqBody.generationConfig?.temperature || 0.5,
+    top_p: reqBody.generationConfig?.topP || 1, // Use the provided value or default
+    n: 1, // Generate a single response
+    stop: null, // No stop sequence
+    safety_settings: reqBody.safetySettings || [] // Use the provided settings or default to an empty array
+  };
+
   const clonedReq = new NextRequest(req.url, {
     method: req.method,
     headers: req.headers,
-    body: clonedReqBody.body,
+    body: JSON.stringify(openaiPayload),
   });
-  
+
   const fetchUrl = `${baseUrl}${path}${
     req?.nextUrl?.searchParams?.get("alt") === "sse" ? "?alt=sse" : ""
   }`;
