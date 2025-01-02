@@ -25,7 +25,7 @@ export async function searchAi(req: NextRequest) {
     SHOW_ZOOM_MODELS.includes(model)
   ) {
     try {
-      const request: NextRequest | undefined;
+      let request: NextRequest | undefined;
       if (isOpenAiModel(model)) {
         request = await searchOpenAi(req);
       }
