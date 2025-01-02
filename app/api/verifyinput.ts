@@ -38,7 +38,7 @@ export async function verifyInput(req: NextRequest) {
       "Cache-Control": "no-store",
       [authHeaderName]: authValue,
       CacheCode: cacheCode,
-      Code: authValue,
+      Code: code,
       // ...(serverConfig.openaiOrgId && {
       //   "OpenAI-Organization": serverConfig.openaiOrgId,
       // }),
