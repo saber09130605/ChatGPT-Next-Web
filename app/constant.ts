@@ -347,15 +347,15 @@ const anthropicModels = [
 const baiduModels = [
   "ernie-4.0-turbo-8k",
   "ernie-4.0-8k",
-  "ernie-4.0-8k-preview",
-  "ernie-4.0-8k-preview-0518",
-  "ernie-4.0-8k-latest",
-  "ernie-3.5-8k",
-  "ernie-3.5-8k-0205",
-  "ernie-speed-128k",
-  "ernie-speed-8k",
-  "ernie-lite-8k",
-  "ernie-tiny-8k",
+  // "ernie-4.0-8k-preview",
+  // "ernie-4.0-8k-preview-0518",
+  // "ernie-4.0-8k-latest",
+  // "ernie-3.5-8k",
+  // "ernie-3.5-8k-0205",
+  // "ernie-speed-128k",
+  // "ernie-speed-8k",
+  // "ernie-lite-8k",
+  // "ernie-tiny-8k",
 ];
 
 const bytedanceModels = [
@@ -469,17 +469,17 @@ export const DEFAULT_MODELS = [
       sorted: 3,
     },
   })),
-  // ...baiduModels.map((name) => ({
-  //   name,
-  //   available: true,
-  //   sorted: seq++,
-  //   provider: {
-  //     id: "baidu",
-  //     providerName: "Baidu",
-  //     providerType: "baidu",
-  //     sorted: 5,
-  //   },
-  // })),
+  ...baiduModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "baidu",
+      providerName: "Baidu",
+      providerType: "baidu",
+      sorted: 5,
+    },
+  })),
   ...bytedanceModels.map((name) => ({
     name,
     available: true,
