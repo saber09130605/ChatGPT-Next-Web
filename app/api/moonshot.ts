@@ -129,6 +129,7 @@ async function request(req: NextRequest) {
   }
 
   try {
+    await verifyInput(clonedReq);
     if (
       cloneBody.zoomModel &&
       cloneBody.zoomModel != "none" &&
@@ -257,8 +258,6 @@ async function request(req: NextRequest) {
     }
     console.log("不联网查询");
     const res = await fetch(fetchUrl, fetchOptions);
-
-    await verifyInput(clonedReq);
 
     // to prevent browser prompt for credentials
     const newHeaders = new Headers(res.headers);
