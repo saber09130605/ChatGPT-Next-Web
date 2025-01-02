@@ -3,7 +3,14 @@ import { NextRequest } from "next/server";
 import { searchOpenAi } from "./handleFunction";
 
 import { SHOW_ZOOM_MODELS } from "@/app/constant";
-
+const isOpenAiModel = (m: string) => {
+  return (
+    m.startsWith("gpt-4") ||
+    m.startsWith("chatgpt-4o") ||
+    m.startsWith("o1") ||
+    m.startsWith("gpt-4o-mini")
+  );
+};
 export async function searchAi(req: NextRequest) {
   const reqClone = req.clone();
   const cloneBody = await reqClone.json();
@@ -18,7 +25,10 @@ export async function searchAi(req: NextRequest) {
     SHOW_ZOOM_MODELS.includes(model)
   ) {
     try {
-      const request: NextRequest | undefined = await searchOpenAi(req);
+      const request: NextRequest | undefined;
+      if (isOpenAiModel(model)) {
+        request = await searchOpenAi(req);
+      }
       if (request) {
         return { request };
       }
