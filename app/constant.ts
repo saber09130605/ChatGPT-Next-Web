@@ -347,15 +347,15 @@ const anthropicModels = [
 const baiduModels = [
   "ernie-4.0-turbo-8k",
   "ernie-4.0-8k",
-  "ernie-4.0-8k-preview",
-  "ernie-4.0-8k-preview-0518",
-  "ernie-4.0-8k-latest",
-  "ernie-3.5-8k",
-  "ernie-3.5-8k-0205",
-  "ernie-speed-128k",
-  "ernie-speed-8k",
-  "ernie-lite-8k",
-  "ernie-tiny-8k",
+  // "ernie-4.0-8k-preview",
+  // "ernie-4.0-8k-preview-0518",
+  // "ernie-4.0-8k-latest",
+  // "ernie-3.5-8k",
+  // "ernie-3.5-8k-0205",
+  // "ernie-speed-128k",
+  // "ernie-speed-8k",
+  // "ernie-lite-8k",
+  // "ernie-tiny-8k",
 ];
 
 const bytedanceModels = [
@@ -365,7 +365,7 @@ const bytedanceModels = [
   // "Doubao-pro-4k",
   "Doubao-pro-32k",
   // "Doubao-pro-128k",
-  "doubao-pro-4k-browsing-240524",
+  "Doubao-pro-4k-browsing",
 ];
 
 const alibabaModes = [
@@ -397,11 +397,16 @@ const tencentModels = [
 const moonshotModes = ["moonshot-v1-8k", "moonshot-v1-32k"];
 
 const iflytekModels = [
-  "general",
-  "generalv3",
-  "pro-128k",
+  // Spark lite
+  // "general",
+  // Spark Pro
+  // "generalv3",
+  // Spark Pro 128k
+  // "pro-128k",
+  // Spark Max
   "generalv3.5",
-  "4.0Ultra",
+  // Spark4.0 Ultra
+  // "4.0Ultra",
 ];
 
 const xAIModes = ["grok-beta"];
@@ -414,8 +419,10 @@ const chatglmModels = [
   // "glm-4-airx",
   // "glm-4-long",
   // "glm-4-flashx",
-  // "glm-4-flash",
-  "",
+  "glm-4-flash",
+  "glm-4v-flash",
+  // "cogview-3-flash",
+  // "cogvideox-flash"
 ];
 
 let seq = 1000; // 内置的模型序号生成器从1000开始
@@ -464,17 +471,17 @@ export const DEFAULT_MODELS = [
       sorted: 3,
     },
   })),
-  // ...baiduModels.map((name) => ({
-  //   name,
-  //   available: true,
-  //   sorted: seq++,
-  //   provider: {
-  //     id: "baidu",
-  //     providerName: "Baidu",
-  //     providerType: "baidu",
-  //     sorted: 5,
-  //   },
-  // })),
+  ...baiduModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "baidu",
+      providerName: "Baidu",
+      providerType: "baidu",
+      sorted: 5,
+    },
+  })),
   ...bytedanceModels.map((name) => ({
     name,
     available: true,
@@ -519,17 +526,17 @@ export const DEFAULT_MODELS = [
       sorted: 9,
     },
   })),
-  // ...iflytekModels.map((name) => ({
-  //   name,
-  //   available: true,
-  //   sorted: seq++,
-  //   provider: {
-  //     id: "iflytek",
-  //     providerName: "Iflytek",
-  //     providerType: "iflytek",
-  //     sorted: 10,
-  //   },
-  // })),
+  ...iflytekModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "iflytek",
+      providerName: "Iflytek",
+      providerType: "iflytek",
+      sorted: 10,
+    },
+  })),
   // ...xAIModes.map((name) => ({
   //   name,
   //   available: true,
@@ -541,17 +548,17 @@ export const DEFAULT_MODELS = [
   //     sorted: 11,
   //   },
   // })),
-  // ...chatglmModels.map((name) => ({
-  //   name,
-  //   available: true,
-  //   sorted: seq++,
-  //   provider: {
-  //     id: "chatglm",
-  //     providerName: "ChatGLM",
-  //     providerType: "chatglm",
-  //     sorted: 12,
-  //   },
-  // })),
+  ...chatglmModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "chatglm",
+      providerName: "ChatGLM",
+      providerType: "chatglm",
+      sorted: 12,
+    },
+  })),
 ] as const;
 
 export const CHAT_PAGE_SIZE = 15;

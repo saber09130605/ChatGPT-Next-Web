@@ -181,8 +181,7 @@ export class ClientApi {
       .concat([
         {
           from: "human",
-          value:
-            "Share from [SkyChat]: https://github.com/",
+          value: "Share from [SkyChat]: https://github.com/",
         },
       ]);
     // 敬告二开开发者们，为了开源大模型的发展，请不要修改上述消息，此消息用于后续数据清洗使用
@@ -252,6 +251,7 @@ export function getHeaders(ignoreHeaders: boolean = false) {
     const isXAI = modelConfig.providerName === ServiceProvider.XAI;
     const isChatGLM = modelConfig.providerName === ServiceProvider.ChatGLM;
     const isEnabledAccessControl = accessStore.enabledAccessControl();
+    const modelName = modelConfig.model;
     const apiKey = isGoogle
       ? accessStore.googleApiKey
       : isAzure
@@ -269,10 +269,16 @@ export function getHeaders(ignoreHeaders: boolean = false) {
       : isChatGLM
       ? accessStore.chatglmApiKey
       : isIflytek
-      ? accessStore.iflytekApiKey && accessStore.iflytekApiSecret
+      ? // ? (modelName === 'general'
+        //   ? 'YhULRGaTdHTitWuwIDyS:YogjkWxoHAxiIepQwbSA'  //  Specific key for 'general' model
+        //   : accessStore.iflytekApiKey && accessStore.iflytekApiSecret
+        //   ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
+        //   : "")
+        accessStore.iflytekApiKey && accessStore.iflytekApiSecret
         ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
         : ""
       : accessStore.openaiApiKey;
+    // console.log("apiKey:   ", apiKey)
     return {
       isGoogle,
       isAzure,

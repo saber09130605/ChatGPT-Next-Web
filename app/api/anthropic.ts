@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { isModelAvailableInServer } from "@/app/utils/model";
 import { cloudflareAIGatewayUrl } from "@/app/utils/cloudflare";
+import { verifyInput } from "./verifyinput";
 
 const ALLOWD_PATH = new Set([Anthropic.ChatPath, Anthropic.ChatPath1]);
 
@@ -93,6 +94,14 @@ async function request(req: NextRequest) {
   // try rebuild url, when using cloudflare ai gateway in server
   const fetchUrl = cloudflareAIGatewayUrl(`${baseUrl}${path}`);
 
+  // 克隆请求对象
+  const clonedReqBody = req.clone();
+  const clonedReq = new NextRequest(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: clonedReqBody.body,
+  });
+
   const fetchOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
@@ -146,6 +155,7 @@ async function request(req: NextRequest) {
   try {
     const res = await fetch(fetchUrl, fetchOptions);
 
+    await verifyInput(clonedReq);
     // console.log(
     //   "[Anthropic response]",
     //   res.status,

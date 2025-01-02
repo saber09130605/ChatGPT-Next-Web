@@ -9,6 +9,7 @@ import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
 import { isModelAvailableInServer } from "@/app/utils/model";
+import { verifyInput } from "./verifyinput";
 // iflytek
 
 const serverConfig = getServerSideConfig();
@@ -65,10 +66,26 @@ async function request(req: NextRequest) {
     10 * 60 * 1000,
   );
 
+  // 克隆请求对象
+  const clonedReqBody = req.clone();
+  // const reqBody = await clonedReqBody.json();
+  const clonedReq = new NextRequest(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: clonedReqBody.body,
+  });
+  // const reqBody = await clonedReqBody.json();
+  // let authorization = ""
+  // if (reqBody.model == "general") {
+  //   authorization = "Bearer gIEJTwtkfwALelGRiTLZ:tpANsKcBlFqaMzDDiqFu"
+  // }
+  console.log(req.headers.get("Authorization"));
+
   const fetchUrl = `${baseUrl}${path}`;
   const fetchOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
+      // Authorization: authorization ?? "",
       Authorization: req.headers.get("Authorization") ?? "",
     },
     method: req.method,
@@ -111,6 +128,8 @@ async function request(req: NextRequest) {
   }
   try {
     const res = await fetch(fetchUrl, fetchOptions);
+
+    await verifyInput(clonedReq);
 
     // to prevent browser prompt for credentials
     const newHeaders = new Headers(res.headers);

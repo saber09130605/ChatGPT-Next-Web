@@ -3,6 +3,7 @@ import { auth } from "./auth";
 import { getServerSideConfig } from "@/app/config/server";
 import { ApiPath, GEMINI_BASE_URL, ModelProvider } from "@/app/constant";
 import { prettyObject } from "@/app/utils/format";
+import { verifyInput } from "./verifyinput";
 
 const serverConfig = getServerSideConfig();
 
@@ -92,6 +93,45 @@ async function request(req: NextRequest, apiKey: string) {
     },
     10 * 60 * 1000,
   );
+
+  // 克隆请求对象
+  const clonedReqBody = req.clone();
+
+  // Extract the model name from the URL
+  const url = new URL(clonedReqBody.url);
+  const modelName = url.pathname.split("/").pop()?.split(":")[0]; // Extract model name
+
+  // Check if the model name is valid.  Crucial!
+  if (!modelName) {
+    return new NextResponse("Invalid model name in URL", { status: 400 });
+  }
+
+  // Parse the request body (assuming it's JSON)
+  const reqBody = await clonedReqBody.json();
+
+  // Construct the OpenAI payload
+  const openaiPayload = {
+    model: modelName, // Use extracted model name
+    messages: reqBody.contents.map(
+      (content: { role: string; parts: { text: string }[] }) => ({
+        role: content.role || "user",
+        content: content.parts[0].text || "", // Convert parts to content
+      }),
+    ), // Use the existing contents array
+    max_tokens: reqBody.generationConfig?.maxOutputTokens || 4000, // Use the provided value or default
+    temperature: reqBody.generationConfig?.temperature || 0.5,
+    top_p: reqBody.generationConfig?.topP || 1, // Use the provided value or default
+    n: 1, // Generate a single response
+    stop: null, // No stop sequence
+    safety_settings: reqBody.safetySettings || [], // Use the provided settings or default to an empty array
+  };
+
+  const clonedReq = new NextRequest(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: JSON.stringify(openaiPayload),
+  });
+
   const fetchUrl = `${baseUrl}${path}${
     req?.nextUrl?.searchParams?.get("alt") === "sse" ? "?alt=sse" : ""
   }`;
@@ -116,6 +156,9 @@ async function request(req: NextRequest, apiKey: string) {
 
   try {
     const res = await fetch(fetchUrl, fetchOptions);
+
+    await verifyInput(clonedReq);
+
     // to prevent browser prompt for credentials
     const newHeaders = new Headers(res.headers);
     newHeaders.delete("www-authenticate");

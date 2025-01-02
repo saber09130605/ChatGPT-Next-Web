@@ -97,12 +97,12 @@ export class DoubaoApi implements LLMApi {
       },
     };
 
-    if (modelConfig.model == "doubao-pro-4k-browsing-240524") {
-      modelConfig.model = "ep-20241231160812-7bdqs"
+    if (modelConfig.model == "Doubao-pro-4k-browsing") {
+      modelConfig.model = "ep-20241231160812-7bdqs";
     }
 
     if (modelConfig.model == "Doubao-pro-32k") {
-      modelConfig.model = "ep-20241231171125-d49j5"
+      modelConfig.model = "ep-20241231171125-d49j5";
     }
 
     const shouldStream = !!options.config.stream;

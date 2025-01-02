@@ -23,13 +23,16 @@ export async function verifyInput(req: NextRequest) {
   const cookiesHeader = req.headers.get("cookie");
   const cookies = cookiesHeader ? parse(cookiesHeader) : {};
   const cacheCode = cookies.cachecode;
-  const code = req.headers.get("code");
+  let code = req.headers.get("code");
   console.log("verifyInput authValue", authValue);
   if (authValue.startsWith("Bearer ")) {
     authValue = authValue.replace("Bearer ", "");
   }
   if (authValue.startsWith(ACCESS_CODE_PREFIX)) {
     authValue = authValue.replace(ACCESS_CODE_PREFIX, "");
+  }
+  if (!code) {
+    code = authValue;
   }
   const apifetchOptions: RequestInit = {
     // @ts-ignore
@@ -38,7 +41,7 @@ export async function verifyInput(req: NextRequest) {
       "Cache-Control": "no-store",
       [authHeaderName]: authValue,
       CacheCode: cacheCode,
-      Code: authValue,
+      Code: code,
       // ...(serverConfig.openaiOrgId && {
       //   "OpenAI-Organization": serverConfig.openaiOrgId,
       // }),
