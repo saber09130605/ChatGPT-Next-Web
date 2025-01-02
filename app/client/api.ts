@@ -252,6 +252,7 @@ export function getHeaders(ignoreHeaders: boolean = false) {
     const isXAI = modelConfig.providerName === ServiceProvider.XAI;
     const isChatGLM = modelConfig.providerName === ServiceProvider.ChatGLM;
     const isEnabledAccessControl = accessStore.enabledAccessControl();
+    const modelName = modelConfig.name
     const apiKey = isGoogle
       ? accessStore.googleApiKey
       : isAzure
@@ -269,9 +270,14 @@ export function getHeaders(ignoreHeaders: boolean = false) {
       : isChatGLM
       ? accessStore.chatglmApiKey
       : isIflytek
-      ? accessStore.iflytekApiKey && accessStore.iflytekApiSecret
-        ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
-        : ""
+      ? (modelName === 'general'
+        ? 'gIEJTwtkfwALelGRiTLZ:tpANsKcBlFqaMzDDiqFu'  //  Specific key for 'general' model
+        : accessStore.iflytekApiKey && accessStore.iflytekApiSecret
+          ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
+          : "")
+      // ? accessStore.iflytekApiKey && accessStore.iflytekApiSecret
+      //   ? accessStore.iflytekApiKey + ":" + accessStore.iflytekApiSecret
+      //   : ""
       : accessStore.openaiApiKey;
     return {
       isGoogle,
