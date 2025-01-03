@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
 import { isModelAvailableInServer } from "@/app/utils/model";
 import { verifyInput } from "./verifyinput";
+import { crawler } from "./searchAi/handleFunction";
 
 const serverConfig = getServerSideConfig();
 
@@ -18,6 +19,23 @@ const tools = [
     type: "builtin_function",
     function: {
       name: "$web_search",
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "crawler",
+      description: "Get the content of a specified url",
+      parameters: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "The URL of the webpage",
+          },
+        },
+        required: ["url"],
+      },
     },
   },
 ];
@@ -170,6 +188,20 @@ async function request(req: NextRequest) {
               tool_call_id: toolCall.id,
               name: tool_call_name,
               content: tool_result, // <-- 我们约定使用字符串格式向 Kimi 大模型提交工具调用结果，因此在这里使用 JSON.stringify 将执行结果序列化成字符串
+            });
+            calledCustomFunction = true;
+          } else if (toolCall.function.name === "crawler") {
+            const functionName = toolCall.function.name;
+            const functionArgs = JSON.parse(toolCall.function.arguments);
+            let functionResponse;
+            if (functionName === "crawler") {
+              functionResponse = await crawler(functionArgs.url);
+            }
+            baseMessages.push({
+              tool_call_id: toolCall.id,
+              role: "tool",
+              name: functionName,
+              content: functionResponse,
             });
             calledCustomFunction = true;
           }
