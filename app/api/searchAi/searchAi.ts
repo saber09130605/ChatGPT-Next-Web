@@ -7,7 +7,7 @@ export async function searchAi(req: NextRequest) {
   const reqClone = req.clone();
   const cloneBody = await reqClone.json();
   const zoomModel = cloneBody?.zoomModel;
-  const lastMessages = cloneBody?.messages.slice(-1)[0];
+  const lastMessages = cloneBody?.messages?.slice(-1)[0];
   if (zoomModel && zoomModel != "none" && lastMessages.role == "user") {
     try {
       const searchBody = {
