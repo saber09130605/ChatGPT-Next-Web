@@ -30,4 +30,21 @@ export const tools = [
       },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "crawler",
+      description: "Get the content of a specified url",
+      parameters: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "The URL of the webpage",
+          },
+        },
+        required: ["url"],
+      },
+    },
+  },
 ];
