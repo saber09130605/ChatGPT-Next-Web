@@ -38,16 +38,30 @@ export async function verifyInput(req: NextRequest) {
   const reqBody = await req.json();
 
   // if (reqBody.messages)
-
+  let messages = [];
+  if (reqBody.messages) {
+    messages = reqBody.messages.map(
+      (contents: { role: string; content: any }) => ({
+        role: contents.role || "user",
+        // content: contents.content[0].text || "", // Convert parts to content
+        content:
+          contents.content?.[0]?.text ??
+          (typeof contents.content === "string" ? contents.content : ""),
+      }),
+    );
+  } else if (reqBody.prompt) {
+    messages = [
+      {
+        role: "user",
+        content: reqBody.prompt,
+      },
+    ];
+  }
   const imagePayload = {
     model: reqBody.model, // Use extracted model name
     // messages: reqBody.messages.map((contents: { role: string; content: string | { text: string; }[] }) => ({
-    messages: reqBody.messages.map((contents: { role: string; content: any }) => ({
-      role: contents.role || "user",
-      // content: contents.content[0].text || "", // Convert parts to content
-      content: contents.content?.[0]?.text ?? (typeof contents.content === 'string' ? contents.content : ""),
-    }))
-  }
+    messages,
+  };
   const apifetchOptions: RequestInit = {
     // @ts-ignore
     headers: {
