@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { requestOpenai } from "../common";
-import { news, general } from "./handleFunction";
+import { news, general, crawler } from "./handleFunction";
 import { tools } from "./searchAiConstant";
 
 export async function searchAi(req: NextRequest) {
@@ -38,6 +38,7 @@ export async function searchAi(req: NextRequest) {
         const availableFunctions = {
           general: general,
           news: news,
+          crawler: crawler,
         };
         for (const toolCall of toolCalls) {
           const functionName = toolCall.function.name;
@@ -49,6 +50,8 @@ export async function searchAi(req: NextRequest) {
             functionResponse = await functionToCall(functionArgs.query);
           } else if (functionName === "news") {
             functionResponse = await functionToCall(functionArgs.query);
+          } else if (functionName === "crawler") {
+            functionResponse = await functionToCall(functionArgs.url);
           }
           modifiedMessages.push({
             tool_call_id: toolCall.id,
