@@ -7,7 +7,6 @@ import { auth } from "./auth";
 import { requestOpenai } from "./common";
 import { searchAi } from "./searchAi/searchAi";
 import { verifyInput } from "./verifyinput";
-import { isDalle3 as _isDalle3 } from "@/app/utils";
 
 const ALLOWED_PATH = new Set(Object.values(OpenaiPath));
 
@@ -27,7 +26,9 @@ function getModels(remoteModelRes: OpenAIListModelResponse) {
 
   return remoteModelRes;
 }
-
+function _isDalle3(model: string) {
+  return "dall-e-3" === model;
+}
 export async function handle(
   req: NextRequest,
   { params }: { params: { path: string[] } },
