@@ -75,6 +75,7 @@ export async function handle(
 
   try {
     let response: Response;
+    console.log("[OpenAI Route] isDalle3 ", isDalle3);
     if (isDalle3) {
       response = await requestOpenai(req);
     } else {
