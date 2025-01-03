@@ -34,6 +34,20 @@ export async function verifyInput(req: NextRequest) {
   if (!code) {
     code = authValue;
   }
+
+  const reqBody = await req.json();
+
+  // if (reqBody.messages)
+
+  const imagePayload = {
+    model: reqBody.model, // Use extracted model name
+    // messages: reqBody.messages.map((contents: { role: string; content: string | { text: string; }[] }) => ({
+    messages: reqBody.messages.map((contents: { role: string; content: any }) => ({
+      role: contents.role || "user",
+      // content: contents.content[0].text || "", // Convert parts to content
+      content: contents.content?.[0]?.text ?? (typeof contents.content === 'string' ? contents.content : ""),
+    }))
+  }
   const apifetchOptions: RequestInit = {
     // @ts-ignore
     headers: {
