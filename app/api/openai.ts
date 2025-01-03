@@ -26,13 +26,19 @@ function getModels(remoteModelRes: OpenAIListModelResponse) {
 
   return remoteModelRes;
 }
-
+function _isDalle3(model: string) {
+  return "dall-e-3" === model;
+}
 export async function handle(
   req: NextRequest,
   { params }: { params: { path: string[] } },
 ) {
   console.log("[OpenAI Route] params ", params);
   // 克隆请求对象
+  const zoomModelClonedReq = req.clone();
+  const zoomModelBody = await zoomModelClonedReq.json();
+  console.log("[OpenAI Route] zoomModelBody ", zoomModelBody);
+  const isDalle3 = _isDalle3(zoomModelBody.model);
   const clonedReqBody = req.clone();
   const clonedReq = new NextRequest(req.url, {
     method: req.method,
@@ -68,12 +74,16 @@ export async function handle(
   }
 
   try {
-    const searchReq = await searchAi(req);
     let response: Response;
-    if (searchReq.response) {
-      response = searchReq.response;
+    if (isDalle3) {
+      response = await requestOpenai(req);
     } else {
-      response = await requestOpenai(searchReq.request);
+      const searchReq = await searchAi(req);
+      if (searchReq.response) {
+        response = searchReq.response;
+      } else {
+        response = await requestOpenai(searchReq.request);
+      }
     }
 
     // 在接口调用成功时调用 verifyInput
