@@ -7,6 +7,7 @@ import { auth } from "./auth";
 import { requestOpenai } from "./common";
 import { searchAi } from "./searchAi/searchAi";
 import { verifyInput } from "./verifyinput";
+import { isDalle3 as _isDalle3 } from "@/app/utils";
 
 const ALLOWED_PATH = new Set(Object.values(OpenaiPath));
 
@@ -36,6 +37,7 @@ export async function handle(
   const zoomModelClonedReq = req.clone();
   const zoomModelBody = await zoomModelClonedReq.json();
   console.log("[OpenAI Route] zoomModelBody ", zoomModelBody);
+  const isDalle3 = _isDalle3(zoomModelBody.model);
   const clonedReqBody = req.clone();
   const clonedReq = new NextRequest(req.url, {
     method: req.method,
@@ -71,12 +73,16 @@ export async function handle(
   }
 
   try {
-    const searchReq = await searchAi(req);
     let response: Response;
-    if (searchReq.response) {
-      response = searchReq.response;
+    if (isDalle3) {
+      response = await requestOpenai(req);
     } else {
-      response = await requestOpenai(searchReq.request);
+      const searchReq = await searchAi(req);
+      if (searchReq.response) {
+        response = searchReq.response;
+      } else {
+        response = await requestOpenai(searchReq.request);
+      }
     }
 
     // 在接口调用成功时调用 verifyInput
