@@ -61,7 +61,8 @@ export async function verifyInput(req: NextRequest) {
       // }),
     },
     method: req.method,
-    body: reqClone.body,
+    // body: reqClone.body,
+    body: JSON.stringify(imagePayload),
     // to fix #2485: https://stackoverflow.com/questions/55920957/cloudflare-worker-typeerror-one-time-use-body
     redirect: "manual",
     // @ts-ignore
