@@ -75,9 +75,10 @@ export async function handle(
 
   try {
     let response: Response;
-    console.log("[OpenAI Route] isDalle3 ", isDalle3);
     if (isDalle3) {
+      console.log("[OpenAI Route] isDalle3 strat", isDalle3);
       response = await requestOpenai(req);
+      console.log("[OpenAI Route] isDalle3 end", isDalle3);
     } else {
       const searchReq = await searchAi(req);
       if (searchReq.response) {
@@ -89,11 +90,13 @@ export async function handle(
 
     // 在接口调用成功时调用 verifyInput
     await verifyInput(clonedReq);
+    console.log("[OpenAI Route] verifyInput end");
 
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
+      console.log("[OpenAI Route] response 200 strat");
       const resJson = (await response.json()) as OpenAIListModelResponse;
-      console.log("[OpenAI] list models response", resJson);
+      console.log("[OpenAI Route] response json end");
       const availableModels = getModels(resJson);
       return NextResponse.json(availableModels, {
         status: response.status,
