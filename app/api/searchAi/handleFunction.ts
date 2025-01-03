@@ -52,10 +52,11 @@ export async function general(query: any) {
 export async function crawler(url: string) {
   console.log(`正在使用 URL 进行自定义爬取:${JSON.stringify(url)}`);
   try {
-    const response = await fetch("https://crawl.search1api.com", {
+    const response = await fetch("https://api.search1api.com/crawl", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.SEARCH1_API_KEY}`,
       },
       body: JSON.stringify({
         url: url,
