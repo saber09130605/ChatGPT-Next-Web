@@ -33,6 +33,9 @@ export async function handle(
 ) {
   console.log("[OpenAI Route] params ", params);
   // 克隆请求对象
+  const zoomModelClonedReq = req.clone();
+  const zoomModelBody = await zoomModelClonedReq.json();
+  console.log("[OpenAI Route] zoomModelBody ", zoomModelBody);
   const clonedReqBody = req.clone();
   const clonedReq = new NextRequest(req.url, {
     method: req.method,
