@@ -160,6 +160,7 @@ export const getServerSideConfig = () => {
   const isIflytek = !!process.env.IFLYTEK_API_KEY;
   const isXAI = !!process.env.XAI_API_KEY;
   const isChatGLM = !!process.env.CHATGLM_API_KEY;
+  const isDify = !!process.env.DIFY_API_KEY;
   // const apiKeyEnvVar = process.env.OPENAI_API_KEY ?? "";
   // const apiKeys = apiKeyEnvVar.split(",").map((v) => v.trim());
   // const randomIndex = Math.floor(Math.random() * apiKeys.length);
@@ -230,6 +231,9 @@ export const getServerSideConfig = () => {
     isChatGLM,
     chatglmUrl: process.env.CHATGLM_URL,
     chatglmApiKey: getApiKey(process.env.CHATGLM_API_KEY),
+
+    isDify,
+    difyKey: getApiKey(process.env.DIFY_API_KEY),
 
     cloudflareAccountId: process.env.CLOUDFLARE_ACCOUNT_ID,
     cloudflareKVNamespaceId: process.env.CLOUDFLARE_KV_NAMESPACE_ID,

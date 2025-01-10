@@ -23,6 +23,7 @@ import { MoonshotApi } from "./platforms/moonshot";
 import { SparkApi } from "./platforms/iflytek";
 import { XAIApi } from "./platforms/xai";
 import { ChatGLMApi } from "./platforms/glm";
+import { DifyApi } from "./platforms/dify";
 
 export const ROLES = ["system", "user", "assistant"] as const;
 export type MessageRole = (typeof ROLES)[number];
@@ -130,6 +131,7 @@ export class ClientApi {
   public llm: LLMApi;
 
   constructor(provider: ModelProvider = ModelProvider.GPT) {
+    console.log({ provider });
     switch (provider) {
       case ModelProvider.GeminiPro:
         this.llm = new GeminiProApi();
@@ -160,6 +162,9 @@ export class ClientApi {
         break;
       case ModelProvider.ChatGLM:
         this.llm = new ChatGLMApi();
+        break;
+      case ModelProvider.Dify:
+        this.llm = new DifyApi();
         break;
       default:
         this.llm = new ChatGPTApi();
@@ -361,6 +366,8 @@ export function getClientApi(provider: ServiceProvider): ClientApi {
       return new ClientApi(ModelProvider.XAI);
     case ServiceProvider.ChatGLM:
       return new ClientApi(ModelProvider.ChatGLM);
+    case ServiceProvider.Dify:
+      return new ClientApi(ModelProvider.Dify);
     default:
       return new ClientApi(ModelProvider.GPT);
   }

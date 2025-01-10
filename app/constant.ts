@@ -35,6 +35,7 @@ export const CHATGLM_BASE_URL = "https://open.bigmodel.cn";
 
 export const CACHE_URL_PREFIX = "/api/cache";
 export const UPLOAD_URL = `${CACHE_URL_PREFIX}/upload`;
+export const DIFY_BASE_URL = "http://172.31.0.71:38080";
 
 export enum Path {
   Home = "/",
@@ -66,6 +67,7 @@ export enum ApiPath {
   Artifacts = "/api/artifacts",
   XAI = "/api/xai",
   ChatGLM = "/api/chatglm",
+  Dify = "/api/dify",
 }
 
 export enum SlotID {
@@ -120,6 +122,7 @@ export enum ServiceProvider {
   Iflytek = "Iflytek",
   XAI = "XAI",
   ChatGLM = "ChatGLM",
+  Dify = "Dify",
 }
 
 // Google API safety settings, see https://ai.google.dev/gemini-api/docs/safety-settings
@@ -144,6 +147,7 @@ export enum ModelProvider {
   Iflytek = "Iflytek",
   XAI = "XAI",
   ChatGLM = "ChatGLM",
+  Dify = "Dify",
 }
 
 export const Stability = {
@@ -234,6 +238,10 @@ export const XAI = {
 export const ChatGLM = {
   ExampleEndpoint: CHATGLM_BASE_URL,
   ChatPath: "api/paas/v4/chat/completions",
+};
+export const Dify = {
+  ExampleEndpoint: DIFY_BASE_URL,
+  ChatPath: "v1/chat/completions",
 };
 
 export const DEFAULT_INPUT_TEMPLATE = `{{input}}`; // input / time / model / lang
@@ -425,6 +433,8 @@ const chatglmModels = [
   // "cogvideox-flash"
 ];
 
+const difyModels = ["dify"];
+
 let seq = 1000; // 内置的模型序号生成器从1000开始
 export const DEFAULT_MODELS = [
   ...openaiModels.map((name) => ({
@@ -557,6 +567,17 @@ export const DEFAULT_MODELS = [
       providerName: "ChatGLM",
       providerType: "chatglm",
       sorted: 12,
+    },
+  })),
+  ...difyModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "dify",
+      providerName: "Dify",
+      providerType: "dify",
+      sorted: 13,
     },
   })),
 ] as const;
