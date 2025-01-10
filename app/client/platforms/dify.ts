@@ -48,7 +48,7 @@ export class DifyApi implements LLMApi {
 
     console.log("[Proxy Endpoint] ", baseUrl, path);
 
-    return [baseUrl, path].join("/");
+    return "/api/dify/" + path;
   }
   async speech(options: SpeechOptions): Promise<ArrayBuffer> {
     console.log("options ", options);
