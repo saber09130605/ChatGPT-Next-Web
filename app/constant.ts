@@ -433,7 +433,7 @@ const chatglmModels = [
   // "cogvideox-flash"
 ];
 
-const difyModels = ["dify"];
+const difyModels = ["337导师"];
 
 let seq = 1000; // 内置的模型序号生成器从1000开始
 export const DEFAULT_MODELS = [
