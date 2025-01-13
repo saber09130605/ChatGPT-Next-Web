@@ -1127,13 +1127,13 @@ function _Chat() {
   };
   const doSubmit = async (userInput: string) => {
     if (userInput.trim() === "" && isEmpty(attachImages)) return;
-    // const checkTextResult = await checkText(
-    //   userInput,
-    //   session.mask.modelConfig.zoomModel,
-    // );
-    // if (!checkTextResult) {
-    //   return;
-    // }
+    const checkTextResult = await checkText(
+      userInput,
+      session.mask.modelConfig.zoomModel,
+    );
+    if (!checkTextResult) {
+      return;
+    }
     const matchCommand = chatCommands.match(userInput);
     setUsage();
     if (matchCommand.matched) {
