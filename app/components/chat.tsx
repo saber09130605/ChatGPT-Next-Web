@@ -491,18 +491,17 @@ export function ChatActions(props: {
   const allModels = useAllModels();
   const models = useMemo(() => {
     const filteredModels = allModels.filter((m) => m.available);
-    // const defaultModel = filteredModels.find((m) => m.isDefault);
+    const defaultModel = filteredModels.find((m) => m.isDefault);
 
-    // if (defaultModel) {
-    //   const arr = [
-    //     defaultModel,
-    //     ...filteredModels.filter((m) => m !== defaultModel),
-    //   ];
-    //   return arr;
-    // } else {
-    //   return filteredModels;
-    // }
-    return filteredModels;
+    if (defaultModel) {
+      const arr = [
+        defaultModel,
+        ...filteredModels.filter((m) => m !== defaultModel),
+      ];
+      return arr;
+    } else {
+      return filteredModels;
+    }
   }, [allModels]);
   const currentModelName = useMemo(() => {
     const model = models.find(
@@ -1127,13 +1126,13 @@ function _Chat() {
   };
   const doSubmit = async (userInput: string) => {
     if (userInput.trim() === "" && isEmpty(attachImages)) return;
-    // const checkTextResult = await checkText(
-    //   userInput,
-    //   session.mask.modelConfig.zoomModel,
-    // );
-    // if (!checkTextResult) {
-    //   return;
-    // }
+    const checkTextResult = await checkText(
+      userInput,
+      session.mask.modelConfig.zoomModel,
+    );
+    if (!checkTextResult) {
+      return;
+    }
     const matchCommand = chatCommands.match(userInput);
     setUsage();
     if (matchCommand.matched) {
