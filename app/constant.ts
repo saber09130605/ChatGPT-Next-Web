@@ -437,17 +437,6 @@ const difyModels = ["337导师"];
 
 let seq = 1000; // 内置的模型序号生成器从1000开始
 export const DEFAULT_MODELS = [
-  ...difyModels.map((name) => ({
-    name,
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "dify",
-      providerName: "Dify",
-      providerType: "dify",
-      sorted: 1,
-    },
-  })),
   ...openaiModels.map((name) => ({
     name,
     available: true,
@@ -456,7 +445,18 @@ export const DEFAULT_MODELS = [
       id: "openai",
       providerName: "OpenAI",
       providerType: "openai",
-      sorted: 2, // 这里是固定的，确保顺序与之前内置的版本一致
+      sorted: 1, // 这里是固定的，确保顺序与之前内置的版本一致
+    },
+  })),
+  ...difyModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "dify",
+      providerName: "Dify",
+      providerType: "dify",
+      sorted: 2,
     },
   })),
   // ...openaiModels.map((name) => ({
