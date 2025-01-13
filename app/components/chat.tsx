@@ -643,14 +643,18 @@ export function ChatActions(props: {
         {showModelSelector && (
           <Selector
             defaultSelectedValue={`${currentModel}@${currentProviderName}`}
-            items={models.map((m) => ({
-              title: `${m.displayName}${
-                m?.provider?.providerName
-                  ? " (" + m?.provider?.providerName + ")"
-                  : ""
-              }`,
-              value: `${m.name}@${m?.provider?.providerName}`,
-            }))}
+            items={models.map((m) => {
+              let providerName = m?.provider?.providerName;
+              if (providerName == "Dify") {
+                providerName = "AI Agent";
+              }
+              return {
+                title: `${m.displayName}${
+                  providerName ? " (" + providerName + ")" : ""
+                }`,
+                value: `${m.name}@${m?.provider?.providerName}`,
+              };
+            })}
             onClose={() => setShowModelSelector(false)}
             onSelection={(s) => {
               if (s.length === 0) return;
