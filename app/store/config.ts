@@ -178,31 +178,23 @@ export const useAppConfig = createPersistStore(
       if (!newModels || newModels.length === 0) {
         return;
       }
-      // 确保所有新模型标记为可用
-      const updatedModels = newModels.map((model) => ({
-        ...model,
-        available: true,
-      }));
+
+      const oldModels = get().models;
+      const modelMap: Record<string, LLMModel> = {};
+
+      for (const model of oldModels) {
+        model.available = false;
+        modelMap[`${model.name}@${model?.provider?.id}`] = model;
+      }
+
+      for (const model of newModels) {
+        model.available = true;
+        modelMap[`${model.name}@${model?.provider?.id}`] = model;
+      }
 
       set(() => ({
-        models: updatedModels,
+        models: Object.values(modelMap),
       }));
-      // const oldModels = get().models;
-      // const modelMap: Record<string, LLMModel> = {};
-
-      // for (const model of oldModels) {
-      //   model.available = false;
-      //   modelMap[`${model.name}@${model?.provider?.id}`] = model;
-      // }
-
-      // for (const model of newModels) {
-      //   model.available = true;
-      //   modelMap[`${model.name}@${model?.provider?.id}`] = model;
-      // }
-
-      // set(() => ({
-      //   models: Object.values(modelMap),
-      // }));
     },
 
     allModels() {},
