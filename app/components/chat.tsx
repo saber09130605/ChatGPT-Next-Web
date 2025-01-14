@@ -1124,7 +1124,22 @@ function _Chat() {
       headers,
     });
   };
-  const doSubmit = async (userInput: string) => {
+  function debounce<T extends (...args: any[]) => any>(
+    func: T,
+    delay: number,
+  ): (...args: Parameters<T>) => void {
+    let timer: NodeJS.Timeout | null = null;
+
+    return (...args: Parameters<T>): void => {
+      if (timer) {
+        clearTimeout(timer); // 清除之前的定时器
+      }
+      timer = setTimeout(() => {
+        func(...args); // 延迟后执行目标函数
+      }, delay);
+    };
+  }
+  const doSubmitHandle = async (userInput: string) => {
     if (userInput.trim() === "" && isEmpty(attachImages)) return;
     const checkTextResult = await checkText(
       userInput,
@@ -1152,6 +1167,7 @@ function _Chat() {
     if (!isMobileScreen) inputRef.current?.focus();
     setAutoScroll(true);
   };
+  const doSubmit = debounce(doSubmitHandle, 500);
 
   const onPromptSelect = (prompt: RenderPrompt) => {
     setTimeout(() => {
