@@ -4,6 +4,7 @@ import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
 import { verifyInput } from "./verifyinput";
+import { models } from "../components/sd";
 
 const serverConfig = getServerSideConfig();
 export async function handle(
@@ -42,12 +43,12 @@ async function request(req: NextRequest) {
   );
 
   // 克隆请求对象
-  const clonedReqBody = req.clone();
-  const clonedReq = new NextRequest(req.url, {
-    method: req.method,
-    headers: req.headers,
-    body: clonedReqBody.body,
-  });
+  // const clonedReqBody = req.clone();
+  // const clonedReq = new NextRequest(req.url, {
+  //   method: req.method,
+  //   headers: req.headers,
+  //   body: clonedReqBody.body,
+  // });
 
   const data = await reqClone.text();
   const cloneData = JSON.parse(data);
@@ -60,6 +61,23 @@ async function request(req: NextRequest) {
     user: lastMessages.role,
     conversation_id: cloneData.conversation_id,
   };
+
+  const bodyVerify = {
+    messages: [
+      {
+        role: "user", 
+        content:lastMessages.content
+      }
+    ],
+    model: cloneData.model
+  };
+
+  const clonedReq = new NextRequest(req.url, {
+      method: req.method,
+      headers: req.headers,
+      body: JSON.stringify(bodyVerify),
+    });
+
   const fetchOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",
