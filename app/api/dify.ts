@@ -3,6 +3,7 @@ import { ModelProvider, DIFY_BASE_URL } from "@/app/constant";
 import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/api/auth";
+import { verifyInput } from "./verifyinput";
 
 const serverConfig = getServerSideConfig();
 export async function handle(
@@ -39,6 +40,15 @@ async function request(req: NextRequest) {
     },
     10 * 60 * 1000,
   );
+
+  // 克隆请求对象
+  const clonedReqBody = req.clone();
+  const clonedReq = new NextRequest(req.url, {
+    method: req.method,
+    headers: req.headers,
+    body: clonedReqBody.body,
+  });
+
   const data = await reqClone.text();
   const cloneData = JSON.parse(data);
   const lastMessages = cloneData?.messages?.slice(-1)[0];
@@ -68,6 +78,9 @@ async function request(req: NextRequest) {
       `${DIFY_BASE_URL}/v1/chat-messages`,
       fetchOptions,
     );
+
+    await verifyInput(clonedReq);
+
     const responseClone = response.clone();
     const resData = await responseClone.json();
     console.log({ resData });
