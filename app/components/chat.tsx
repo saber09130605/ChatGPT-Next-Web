@@ -1141,28 +1141,28 @@ function _Chat() {
   }
   const doSubmitHandle = async (userInput: string) => {
     if (userInput.trim() === "" && isEmpty(attachImages)) return;
+    const inputText = userInput.trim();
+    setUserInput("");
     const checkTextResult = await checkText(
-      userInput,
+      inputText,
       session.mask.modelConfig.zoomModel,
     );
     if (!checkTextResult) {
       return;
     }
-    const matchCommand = chatCommands.match(userInput);
+    const matchCommand = chatCommands.match(inputText);
     setUsage();
     if (matchCommand.matched) {
-      setUserInput("");
       setPromptHints([]);
       matchCommand.invoke();
       return;
     }
     setIsLoading(true);
     chatStore
-      .onUserInput(userInput, attachImages)
+      .onUserInput(inputText, attachImages)
       .then(() => setIsLoading(false));
     setAttachImages([]);
-    chatStore.setLastInput(userInput);
-    setUserInput("");
+    chatStore.setLastInput(inputText);
     setPromptHints([]);
     if (!isMobileScreen) inputRef.current?.focus();
     setAutoScroll(true);
